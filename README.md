@@ -1,2 +1,2 @@
-# Calendar
+# 4K-Planner
 student project
