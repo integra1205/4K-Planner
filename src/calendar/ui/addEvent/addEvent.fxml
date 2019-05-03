@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="249.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calendar.form.addEvent.AddEventController">
+<AnchorPane fx:id="rootPane" prefHeight="249.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calendar.ui.addEvent.AddEventController">
     <children>
         <HBox id="header" fx:id="header" prefHeight="35.0" prefWidth="340.0" stylesheets="@../style/materialButtonStyle.css">
             <children>

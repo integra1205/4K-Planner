@@ -1,4 +1,4 @@
-package calendar.form.addEvent;
+package calendar.ui.addEvent;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
