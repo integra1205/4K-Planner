@@ -1,4 +1,4 @@
-package calendar.form.addEvent;
+package calendar.ui.addEvent;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
