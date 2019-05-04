@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
         primaryStage.setTitle("4K-planner");
-        primaryStage.setScene(new Scene(root, 1350, 800));
+        primaryStage.setScene(new Scene(root, 1350, 880));
         primaryStage.show();
     }
 

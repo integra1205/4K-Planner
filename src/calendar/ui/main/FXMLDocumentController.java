@@ -1,9 +1,9 @@
 package calendar.ui.main;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXColorPicker;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXDatePicker;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -29,22 +29,25 @@ public class FXMLDocumentController {
     private AnchorPane rootPane;
 
     @FXML
-    private Label calendarNameLbl;
+    private Label today_is;
 
     @FXML
-    private Label monthLabel;
+    private Label go_to;
 
     @FXML
-    private JFXComboBox<?> selectedYear;
-
-    @FXML
-    private JFXListView<?> monthSelect;
+    private JFXDatePicker date_piker_go_to;
 
     @FXML
     private VBox centerAreaYear;
 
     @FXML
     private ScrollPane scrollPaneYear;
+
+    @FXML
+    private JFXButton button_prev_year;
+
+    @FXML
+    private JFXButton button_next_year;
 
     @FXML
     private HBox weekdayHeaderYear;
@@ -59,6 +62,12 @@ public class FXMLDocumentController {
     private ScrollPane scrollPane;
 
     @FXML
+    private JFXButton button_prev_month;
+
+    @FXML
+    private JFXButton button_next_month;
+
+    @FXML
     private HBox weekdayHeader;
 
     @FXML
@@ -71,6 +80,12 @@ public class FXMLDocumentController {
     private ScrollPane scrollPaneWeek;
 
     @FXML
+    private JFXButton button_prev_week;
+
+    @FXML
+    private JFXButton button_next_week;
+
+    @FXML
     private HBox weekdayHeaderWeek;
 
     @FXML
@@ -81,6 +96,12 @@ public class FXMLDocumentController {
 
     @FXML
     private ScrollPane scrollPaneDay;
+
+    @FXML
+    private JFXButton button_prev_day;
+
+    @FXML
+    private JFXButton button_next_day;
 
     @FXML
     private HBox dayHeader;
@@ -172,24 +193,31 @@ public class FXMLDocumentController {
     @FXML
     void initialize() {
         assert rootPane != null : "fx:id=\"rootPane\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
-        assert calendarNameLbl != null : "fx:id=\"calendarNameLbl\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
-        assert monthLabel != null : "fx:id=\"monthLabel\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
-        assert selectedYear != null : "fx:id=\"selectedYear\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
-        assert monthSelect != null : "fx:id=\"monthSelect\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert today_is != null : "fx:id=\"today_is\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert go_to != null : "fx:id=\"go_to\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert date_piker_go_to != null : "fx:id=\"date_piker_go_to\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert centerAreaYear != null : "fx:id=\"centerAreaYear\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert scrollPaneYear != null : "fx:id=\"scrollPaneYear\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert button_prev_year != null : "fx:id=\"button_prev_year\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert button_next_year != null : "fx:id=\"button_next_year\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert weekdayHeaderYear != null : "fx:id=\"weekdayHeaderYear\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert calendarGridYear != null : "fx:id=\"calendarGridYear\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert centerArea != null : "fx:id=\"centerArea\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert scrollPane != null : "fx:id=\"scrollPane\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert button_prev_month != null : "fx:id=\"button_prev_month\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert button_next_month != null : "fx:id=\"button_next_month\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert weekdayHeader != null : "fx:id=\"weekdayHeader\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert calendarGrid != null : "fx:id=\"calendarGrid\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert centerAreaWeek != null : "fx:id=\"centerAreaWeek\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert scrollPaneWeek != null : "fx:id=\"scrollPaneWeek\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert button_prev_week != null : "fx:id=\"button_prev_week\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert button_next_week != null : "fx:id=\"button_next_week\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert weekdayHeaderWeek != null : "fx:id=\"weekdayHeaderWeek\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert calendarGridWeek != null : "fx:id=\"calendarGridWeek\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert centerAreaDay != null : "fx:id=\"centerAreaDay\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert scrollPaneDay != null : "fx:id=\"scrollPaneDay\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert button_prev_day != null : "fx:id=\"button_prev_day\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert button_next_day != null : "fx:id=\"button_next_day\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert dayHeader != null : "fx:id=\"dayHeader\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert calendarGridDay != null : "fx:id=\"calendarGridDay\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert colorRootPane != null : "fx:id=\"colorRootPane\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
