@@ -28,6 +28,9 @@ public class FXMLDocumentController {
     @FXML
     private AnchorPane rootPane;
 
+
+    // ***** elements of RIGHT-PANE: *****
+
     @FXML
     private Label today_is;
 
@@ -36,6 +39,11 @@ public class FXMLDocumentController {
 
     @FXML
     private JFXDatePicker date_piker_go_to;
+
+
+    // ***** elements of CENTER-PANE: *****
+
+    // ***** for YEAR: *****
 
     @FXML
     private VBox centerAreaYear;
@@ -55,6 +63,10 @@ public class FXMLDocumentController {
     @FXML
     private GridPane calendarGridYear;
 
+
+    // ***** for MONTH: *****
+
+
     @FXML
     private VBox centerArea;
 
@@ -72,6 +84,10 @@ public class FXMLDocumentController {
 
     @FXML
     private GridPane calendarGrid;
+
+
+    // ***** for  WEEK: *****
+
 
     @FXML
     private VBox centerAreaWeek;
@@ -91,6 +107,11 @@ public class FXMLDocumentController {
     @FXML
     private GridPane calendarGridWeek;
 
+
+
+    // ***** for DAY: *****
+
+
     @FXML
     private VBox centerAreaDay;
 
@@ -109,8 +130,13 @@ public class FXMLDocumentController {
     @FXML
     private GridPane calendarGridDay;
 
+
+
+    // ***** elements of LEFT-PANE: *****
+
     @FXML
     private VBox colorRootPane;
+
 
     @FXML
     private TextField nameCategory1;
@@ -121,6 +147,8 @@ public class FXMLDocumentController {
     @FXML
     private JFXCheckBox CheckBoxCategory1;
 
+
+
     @FXML
     private TextField nameCategory2;
 
@@ -129,6 +157,8 @@ public class FXMLDocumentController {
 
     @FXML
     private JFXCheckBox CheckBoxCategory2;
+
+
 
     @FXML
     private TextField nameCategory3;
@@ -139,6 +169,8 @@ public class FXMLDocumentController {
     @FXML
     private JFXCheckBox CheckBoxCategory3;
 
+
+
     @FXML
     private TextField nameCategory4;
 
@@ -147,6 +179,8 @@ public class FXMLDocumentController {
 
     @FXML
     private JFXCheckBox CheckBoxCategory4;
+
+
 
     @FXML
     private TextField nameCategory5;
@@ -157,8 +191,12 @@ public class FXMLDocumentController {
     @FXML
     private JFXCheckBox CheckBoxCategory5;
 
+
+
     @FXML
     private JFXCheckBox selectAllCheckBox;
+
+
 
     @FXML
     void deleteAllEvents(MouseEvent event) {
