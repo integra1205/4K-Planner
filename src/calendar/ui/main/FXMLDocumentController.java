@@ -1,11 +1,22 @@
 package calendar.ui.main;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.IsoFields;
+import java.util.Calendar;
+
+import calendar.data.model.Model;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXDatePicker;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -16,6 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 public class FXMLDocumentController {
 
@@ -27,6 +39,11 @@ public class FXMLDocumentController {
 
     @FXML
     private AnchorPane rootPane;
+
+
+    //--------- Database Handler -----------------------------------------
+   //  DBHandler databaseHandler;     Девчонки! не забыть про БД      DON'T FORGET ABOUT DB!!!
+    //--------------------------------------------------------------------
 
 
     // ***** elements of RIGHT-PANE: *****
@@ -63,6 +80,9 @@ public class FXMLDocumentController {
     @FXML
     private GridPane calendarGridYear;
 
+    @FXML
+    private Label selected_date_for_year;
+
 
     // ***** for MONTH: *****
 
@@ -84,6 +104,9 @@ public class FXMLDocumentController {
 
     @FXML
     private GridPane calendarGrid;
+
+    @FXML
+    private Label selected_date_for_month;
 
 
     // ***** for  WEEK: *****
@@ -107,10 +130,12 @@ public class FXMLDocumentController {
     @FXML
     private GridPane calendarGridWeek;
 
+    @FXML
+    private Label selected_date_for_week;
+
 
 
     // ***** for DAY: *****
-
 
     @FXML
     private VBox centerAreaDay;
@@ -129,6 +154,9 @@ public class FXMLDocumentController {
 
     @FXML
     private GridPane calendarGridDay;
+
+    @FXML
+    private Label selected_date_for_day;
 
 
 
@@ -228,8 +256,13 @@ public class FXMLDocumentController {
 
     }
 
+    Calendar calendar=Calendar.getInstance();
+
+    DateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
+
     @FXML
     void initialize() {
+
         assert rootPane != null : "fx:id=\"rootPane\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert today_is != null : "fx:id=\"today_is\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert go_to != null : "fx:id=\"go_to\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
@@ -237,24 +270,28 @@ public class FXMLDocumentController {
         assert centerAreaYear != null : "fx:id=\"centerAreaYear\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert scrollPaneYear != null : "fx:id=\"scrollPaneYear\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert button_prev_year != null : "fx:id=\"button_prev_year\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert selected_date_for_year != null : "fx:id=\"selected_date_for_year\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert button_next_year != null : "fx:id=\"button_next_year\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert weekdayHeaderYear != null : "fx:id=\"weekdayHeaderYear\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert calendarGridYear != null : "fx:id=\"calendarGridYear\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert centerArea != null : "fx:id=\"centerArea\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert scrollPane != null : "fx:id=\"scrollPane\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert button_prev_month != null : "fx:id=\"button_prev_month\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert selected_date_for_month != null : "fx:id=\"selected_date_for_month\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert button_next_month != null : "fx:id=\"button_next_month\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert weekdayHeader != null : "fx:id=\"weekdayHeader\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert calendarGrid != null : "fx:id=\"calendarGrid\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert centerAreaWeek != null : "fx:id=\"centerAreaWeek\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert scrollPaneWeek != null : "fx:id=\"scrollPaneWeek\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert button_prev_week != null : "fx:id=\"button_prev_week\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert selected_date_for_week != null : "fx:id=\"selected_date_for_week\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert button_next_week != null : "fx:id=\"button_next_week\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert weekdayHeaderWeek != null : "fx:id=\"weekdayHeaderWeek\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert calendarGridWeek != null : "fx:id=\"calendarGridWeek\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert centerAreaDay != null : "fx:id=\"centerAreaDay\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert scrollPaneDay != null : "fx:id=\"scrollPaneDay\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert button_prev_day != null : "fx:id=\"button_prev_day\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
+        assert selected_date_for_day != null : "fx:id=\"selected_date_for_day\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert button_next_day != null : "fx:id=\"button_next_day\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert dayHeader != null : "fx:id=\"dayHeader\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert calendarGridDay != null : "fx:id=\"calendarGridDay\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
@@ -276,5 +313,80 @@ public class FXMLDocumentController {
         assert CheckBoxCategory5 != null : "fx:id=\"CheckBoxCategory5\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
         assert selectAllCheckBox != null : "fx:id=\"selectAllCheckBox\" was not injected: check your FXML file 'FXMLDocument.fxml'.";
 
+        // LEFT-PANE TODAY
+        today_is.setText(dateFormat.format(calendar.getTime()));
+
+        //  TODAY - for default viewing
+        Model.getInstance().viewing_year=calendar.get(Calendar.YEAR);
+        Model.getInstance().viewing_month= Model.getInstance().getMonthName(calendar.get(Calendar.MONTH));
+        Model.getInstance().viewing_week= calendar.get(Calendar.WEEK_OF_YEAR);
+        Model.getInstance().viewing_day= calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Event`s from data picker
+        initializeDatePicker();
     }
+
+    @FXML
+    private void initializeDatePicker() {
+
+//      Our format for DataPicker
+        date_piker_go_to.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "dd-MM-YYYY";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                date_piker_go_to.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+
+        // Add event listener to dataPicker
+        date_piker_go_to.valueProperty().addListener((new ChangeListener<LocalDate>() {
+
+            @Override
+            public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
+
+                if (newValue != null) {
+
+                    Model.getInstance().viewing_year=date_piker_go_to.getValue().getYear();
+                    Model.getInstance().viewing_month= date_piker_go_to.getValue().getMonth();
+                    Model.getInstance().viewing_week= date_piker_go_to.getValue().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+                    Model.getInstance().viewing_day=  date_piker_go_to.getValue().getDayOfMonth();
+
+                    selected_date_for_year.setText(String.valueOf(Model.getInstance().viewing_year));
+                    selected_date_for_month.setText(String.valueOf(Model.getInstance().viewing_month));
+                    selected_date_for_week.setText("Number of Week is "+ Model.getInstance().viewing_week);
+
+                    selected_date_for_day.setText(Model.getInstance().viewing_day +" "
+                                                 + Model.getInstance().viewing_month +" "
+                                                 + Model.getInstance().viewing_year);
+
+                    // Update view
+                    repaintView();
+                }
+            };
+        }));
+    }
+
+    public void repaintView(){
+        //... repaint...
+    }
+
 }
