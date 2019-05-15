@@ -68,47 +68,47 @@ public class MyCalendar {
     }
 
     public enum Month {
-        January,
-        February,
-        March,
-        April,
-        May,
-        June,
-        July,
-        August,
-        September,
-        October,
-        November,
-        December
+        JANUARY,
+        FEBRUARY,
+        MARCH,
+        APRIL,
+        MAY,
+        JUNE,
+        JULY,
+        AUGUST,
+        SEPTEMBER,
+        OCTOBER,
+        NOVEMBER,
+        DECEMBER
     }
 
     //Function that returns a month Index based on the given month name
     public int getMonthIndex(String month){
         switch (month)
         {
-            case "January":
+            case "JANUARY":
                 return 0;
-            case "February":
+            case "FEBRUARY":
                 return 1;
-            case "March":
+            case "MARCH":
                 return 2;
-            case "April":
+            case "APRIL":
                 return 3;
-            case "May":
+            case "MAY":
                 return 4;
-            case "June":
+            case "JUNE":
                 return 5;
-            case "July":
+            case "JULY":
                 return 6;
-            case "August":
+            case "AUGUST":
                 return 7;
-            case "September":
+            case "SEPTEMBER":
                 return 8;
-            case "October":
+            case "OCTOBER":
                 return 9;
-            case "November":
+            case "NOVEMBER":
                 return 10;
-            case "December":
+            case "DECEMBER":
                 return 11;
         }
         return 0;

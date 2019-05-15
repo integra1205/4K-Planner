@@ -8,10 +8,8 @@ import calendar.ui.editevent.EditEventController;
 import calendar.ui.listcalendars.ListCalendarsController;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXColorPicker;
-import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.effects.JFXDepthManager;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,6 +40,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,9 +50,7 @@ public class FXMLDocumentController implements Initializable {
 
     // Calendar fields
     @FXML
-    private JFXComboBox selectedMonth;
-    @FXML
-    private JFXComboBox selectedYear;
+    private JFXDatePicker selectedDate;
     @FXML
     private HBox weekdayHeader;
 
@@ -124,6 +121,8 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private Label calendarNameLbl;
+    @FXML
+    private Label todayLbl;
 
     // Other global variables for the class
     public static boolean workingOnCalendar = false;
@@ -275,29 +274,28 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    private void initializeMonthSelector() {
+    private void initializeDateSelector() {
 
-        // Add event listener to each month list item, allowing user to change months
-        selectedMonth.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        // Add event listener to each month list item, allowing user to change date
+        selectedDate.valueProperty().addListener((observable, oldValue, newValue) ->  {
 
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
-                // Necessary to check for null because change listener will
+                 // Necessary to check for null because change listener will
                 // also detect clear() calls
                 if (newValue != null) {
 
                     // Update the VIEWING MONTH
-                    MyCalendar.getInstance().viewing_month = MyCalendar.getInstance().getMonthIndex(newValue);
+                    MyCalendar.getInstance().viewing_month = MyCalendar.getInstance().getMonthIndex(newValue.getMonth().toString());
+                    MyCalendar.getInstance().viewing_year = newValue.getYear();
+                    MyCalendar.getInstance().viewing_day = newValue.getDayOfYear();
+                    MyCalendar.getInstance().viewing_week = newValue.getDayOfWeek().getValue();
 
                     // Update view
                     repaintView();
                 }
-
             }
-        });
+        );
 
-        // Add event listener to each year item, allowing user to change years
+/*        // Add event listener to each year item, allowing user to change years
         selectedYear.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -312,7 +310,7 @@ public class FXMLDocumentController implements Initializable {
                     repaintView();
                 }
             }
-        });
+        });*/
     }
 
     private void loadCalendarLabels() {
@@ -338,31 +336,31 @@ public class FXMLDocumentController implements Initializable {
         // Go through calendar grid
         for (Node node : monthView.getChildren()) {
 
-            VBox day = (VBox) node;
+            VBox dayOfMonth = (VBox) node;
 
-            day.getChildren().clear();
-            day.setStyle("-fx-backgroud-color: white");
-            day.setStyle("-fx-font: 14px \"System\" ");
+            dayOfMonth.getChildren().clear();
+            dayOfMonth.setStyle("-fx-backgroud-color: white");
+            dayOfMonth.setStyle("-fx-font: 14px \"System\" ");
 
-            // Start placing labels on the first day for the month
+            // Start placing labels on the first dayOfMonth for the month
             if (gridCount < offset) {
                 gridCount++;
                 // Darken color of the offset days
-                day.setStyle("-fx-background-color: #E9F2F5");
+                dayOfMonth.setStyle("-fx-background-color: #E9F2F5");
             } else {
 
                 // Don't place a label if we've reached maximum label for the month
                 if (lblCount > daysInMonth) {
-                    // Instead, darken day color
-                    day.setStyle("-fx-background-color: #E9F2F5");
+                    // Instead, darken dayOfMonth color
+                    dayOfMonth.setStyle("-fx-background-color: #E9F2F5");
                 } else {
 
-                    // Make a new day label
+                    // Make a new dayOfMonth label
                     Label lbl = new Label(Integer.toString(lblCount));
                     lbl.setPadding(new Insets(5));
                     lbl.setStyle("-fx-text-fill:darkslategray");
 
-                    day.getChildren().add(lbl);
+                    dayOfMonth.getChildren().add(lbl);
                 }
 
                 lblCount++;
@@ -374,32 +372,14 @@ public class FXMLDocumentController implements Initializable {
 
         // Set calendar name label
         calendarNameLbl.setText(MyCalendar.getInstance().calendar_name);
+        todayLbl.setText(LocalDate.now().toString());
+        selectedDate.setValue(LocalDate.now());
 
-        // Get a list of all the months (1-12) in a year and 5 years
-        DateFormatSymbols dateFormat = new DateFormatSymbols(Locale.ENGLISH);
-        String months[] = dateFormat.getMonths();
-        String[] spliceMonths = Arrays.copyOfRange(months, 0, 12);
-        String years[] = {"2019", "2020", "2021", "2022", "2023"};
+        // Load year and month selection
+        MyCalendar.getInstance().viewing_year = selectedDate.getValue().getYear();
 
-        //Load year selection
-        selectedYear.getItems().clear();
-        selectedYear.getItems().addAll(years);
-        selectedYear.getSelectionModel().selectFirst();
-
-        // Update the VIEWING YEAR
-        MyCalendar.getInstance().viewing_year = Integer.parseInt(selectedYear.getSelectionModel().getSelectedItem().toString());
-
-        // Load month selection
-        selectedMonth.getItems().clear();
-        selectedMonth.getItems().addAll(spliceMonths);
-        // Select the first MONTH as default
-        selectedMonth.getSelectionModel().selectFirst();
-
-
-        // Update the VIEWING MONTH
         MyCalendar.getInstance().viewing_month =
-                MyCalendar.getInstance().getMonthIndex(selectedMonth.getSelectionModel().getSelectedItem().toString());
-
+                MyCalendar.getInstance().getMonthIndex(selectedDate.getValue().getMonth().toString());
         // Update view
         repaintView();
     }
@@ -437,10 +417,10 @@ public class FXMLDocumentController implements Initializable {
 
         // Get viewing calendar
         String calendarName = MyCalendar.getInstance().calendar_name;
-        String currentMonth = selectedMonth.getValue().toString();
+        String currentMonth = selectedDate.getValue().getMonth().toString();
 
         int currentMonthIndex = MyCalendar.getInstance().getMonthIndex(currentMonth) + 1;
-        int currentYear = Integer.parseInt(selectedYear.getValue().toString());
+        int currentYear = selectedDate.getValue().getYear();
 
         // Query to get ALL Events from the selected calendar!!
         String getMonthEventsQuery = "SELECT * From EVENTS WHERE CalendarName='" + calendarName + "'";
@@ -815,12 +795,17 @@ public class FXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         // Make empty calendar in every view
+        initializeDateSelector();
+
         initializeDayView();
+
         initializeWeekView();
+
         initializeMonthView();
-        initializeYearView();
         initializeCalendarWeekdayHeader();
-        initializeMonthSelector();
+
+        initializeYearView();
+
 
         // Set Depths
         JFXDepthManager.setDepth(scrollPane, 1);
