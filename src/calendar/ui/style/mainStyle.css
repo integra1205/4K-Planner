@@ -112,3 +112,7 @@
 .jfx-tab-pane .headers-region {
     -fx-background-color: #555;
 }
+
+.date-picker > .text-field  {
+    -fx-alignment: center;
+}
