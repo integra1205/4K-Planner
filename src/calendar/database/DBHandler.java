@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class DBHandler {
 
     private static DBHandler handler;
+    //jhhuhu
 
     private static final String DB_URL = "jdbc:derby:calendarDatabase;create=true";
     private static Connection conn = null;
