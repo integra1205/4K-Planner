@@ -1,5 +1,6 @@
 package calendar.ui.main;
 
+import calendar.data.model.MyEvent;
 import calendar.data.model.MyCalendar;
 import calendar.database.DBHandler;
 import calendar.ui.addcalendar.AddCalendarController;
@@ -38,7 +39,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -525,8 +525,8 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void exportCalendarPDF() {
-        TableView<Event> table = new TableView<Event>();
-        ObservableList<Event> data = FXCollections.observableArrayList();
+        TableView<MyEvent> table = new TableView<MyEvent>();
+        ObservableList<MyEvent> data = FXCollections.observableArrayList();
 
 
         double w = 500.00;
@@ -535,17 +535,17 @@ public class FXMLDocumentController implements Initializable {
         // set resize policy
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         // intialize columns
-        TableColumn<Event, String> categorie = new TableColumn<Event, String>("Categorie");
-        TableColumn<Event, String> subject = new TableColumn<Event, String>("Subject");
-        TableColumn<Event, String> date = new TableColumn<Event, String>("Date");
+        TableColumn<MyEvent, String> categorie = new TableColumn<MyEvent, String>("Categorie");
+        TableColumn<MyEvent, String> subject = new TableColumn<MyEvent, String>("Subject");
+        TableColumn<MyEvent, String> date = new TableColumn<MyEvent, String>("Date");
         // set width of columns
         categorie.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 50% width
         subject.setMaxWidth(1f * Integer.MAX_VALUE * 60); // 50% width
         date.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 50% width
         // 
-        categorie.setCellValueFactory(new PropertyValueFactory<Event, String>("categorie"));
-        subject.setCellValueFactory(new PropertyValueFactory<Event, String>("subject"));
-        date.setCellValueFactory(new PropertyValueFactory<Event, String>("date"));
+        categorie.setCellValueFactory(new PropertyValueFactory<MyEvent, String>("categorie"));
+        subject.setCellValueFactory(new PropertyValueFactory<MyEvent, String>("subject"));
+        date.setCellValueFactory(new PropertyValueFactory<MyEvent, String>("date"));
 
         // Add columns to the table
         table.getColumns().add(categorie);
@@ -598,7 +598,7 @@ public class FXMLDocumentController implements Initializable {
 
 
                 //Add event information in a row
-                data.add(new Event(evCategorie, eventDescript, eventDate));
+                data.add(new MyEvent(evCategorie, eventDescript, eventDate));
 
             }
         } catch (SQLException ex) {
