@@ -21,6 +21,17 @@ public class MyEvent {
         this.enddate = new SimpleStringProperty(enddate);
         this.endtime = new SimpleStringProperty(endtime);
     }
+
+    public MyEvent(String subject, String categorie,String startdate,
+                   String starttime, String enddate, String endtime) {
+        this.subject = new SimpleStringProperty(subject);
+        this.categorie = new SimpleStringProperty(categorie);
+        this.calendar = new SimpleStringProperty("");
+        this.startdate = new SimpleStringProperty(startdate);
+        this.starttime = new SimpleStringProperty(starttime);
+        this.enddate = new SimpleStringProperty(enddate);
+        this.endtime = new SimpleStringProperty(endtime);
+    }
     
     // Note: We need these accessors.
 

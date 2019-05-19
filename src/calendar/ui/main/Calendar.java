@@ -4,14 +4,14 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Calendar {
     private final SimpleStringProperty name;
-    private final SimpleStringProperty startYear;
-
     private final SimpleStringProperty startDate;
+    private final SimpleStringProperty updateDate;
 
-    public Calendar(String name, String startYear, String startingDate) {
+
+    public Calendar(String name, String startingDate, String updatingDate) {
         this.name = new SimpleStringProperty(name);
-        this.startYear = new SimpleStringProperty(startYear);
         this.startDate = new SimpleStringProperty(startingDate);
+        this.updateDate = new SimpleStringProperty(updatingDate);
 
     }
 
@@ -19,12 +19,11 @@ public class Calendar {
         return name.get();
     }
 
-    public String getStartYear() {
-        return startYear.get();
-    }
-
     public String getStartDate() {
         return startDate.get();
     }
 
+    public String getUpdateDate() {
+        return updateDate.get();
+    }
 }

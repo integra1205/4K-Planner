@@ -6,10 +6,7 @@ package calendar.ui.addevent;
 import calendar.data.model.MyCalendar;
 import calendar.database.DBHandler;
 import calendar.ui.main.FXMLDocumentController;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,6 +22,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -56,9 +54,11 @@ public class AddEventController implements Initializable {
     // Text fields
     @FXML
     private JFXTextField subject;
+    @FXML
+    private JFXTextArea comment;
 
     @FXML
-    private JFXComboBox<String> termSelect;
+    private JFXComboBox<String> categorieSelect;
 
     // Buttons
     @FXML
@@ -66,9 +66,16 @@ public class AddEventController implements Initializable {
     @FXML
     private JFXButton cancelButton;
 
-    // Date picker
+    // Date and Time Picker
     @FXML
-    private JFXDatePicker date;
+    private JFXTimePicker startTime;
+    @FXML
+    private JFXDatePicker startDate;
+
+    @FXML
+    private JFXTimePicker endTime;
+    @FXML
+    private JFXDatePicker endDate;
 
     // These fields are for mouse dragging of window
     private double xOffset;
@@ -95,12 +102,16 @@ public class AddEventController implements Initializable {
         // Get the calendar name
         String calendarName = MyCalendar.getInstance().calendar_name;
 
-        // Define date format
-        DateTimeFormatter myFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // Define Date format '2011-12-03'
+        DateTimeFormatter myFormat = DateTimeFormatter.ISO_LOCAL_DATE;
+        // Define Time format '10:15:30'
+        DateTimeFormatter myTimeFormat = DateTimeFormatter.ISO_LOCAL_TIME;
+
 
         //Check if the user inputted information in all required fields!
-        if (subject.getText().isEmpty() || termSelect.getSelectionModel().isEmpty()
-                || date.getValue() == null) {
+        if (subject.getText().isEmpty() || categorieSelect.getSelectionModel().isEmpty()
+                || startDate.getValue() == null || startTime.getValue() == null
+                || endDate.getValue() == null || endTime.getValue() == null) {
             Alert alertMessage = new Alert(Alert.AlertType.ERROR);
             alertMessage.setHeaderText(null);
             alertMessage.setContentText("Please fill out all fields");
@@ -109,7 +120,7 @@ public class AddEventController implements Initializable {
         }
 
         //Check if the event descritption contains the character ~ because it cannot contain it due to database and filtering issues
-        if (subject.getText().contains("~")) {
+        if (subject.getText().contains("~") || comment.getText().contains("~")) {
             //Show message indicating that the event description cannot contain the character ~
             Alert alertMessage = new Alert(Alert.AlertType.WARNING);
             alertMessage.setHeaderText(null);
@@ -120,14 +131,19 @@ public class AddEventController implements Initializable {
 
         //If all data is inputted correctly and validated, then add the event:
 
-        // Get the date value from the date picker
-        String calendarDate = date.getValue().format(myFormat);
+        // Get values from the DatePickers and TimePickers
+        String sDate = startDate.getValue().format(myFormat);
+        String sTime = startTime.getValue().format(myTimeFormat);
 
-        // Subject for the event
+        String eDate = endDate.getValue().format(myFormat);
+        String eTime = endTime.getValue().format(myTimeFormat);
+
+        // Subject and comment for the event
         String eventSubject = subject.getText();
+        String eventComment = comment.getText();
 
         // Get term that was selected by the user
-        String categorie = termSelect.getValue();
+        String categorie = categorieSelect.getValue();
 
         // variable that holds the ID value of the term selected by the user. It set to 0 becasue no selection has been made yet
         int chosenCategorieID = 0;
@@ -139,11 +155,16 @@ public class AddEventController implements Initializable {
         //Insert new event into the EVENTS table in the database
 
         //Query to get ID for the selected Term
-        String insertQuery = "INSERT INTO EVENTS VALUES ("
+        String insertQuery = "INSERT INTO EVENTS(EventDescription,CategorieID,CalendarName,EventStartDate,EventStartTime,EventEndDate,EventEndTime,EventComment) " +
+                "VALUES ("
                 + "'" + eventSubject + "', "
-                + "'" + calendarDate + "', "
                 + chosenCategorieID + ", "
-                + "'" + calendarName + "'"
+                + "'" + calendarName + "', "
+                + "'" + sDate + "', "
+                + "'" + sTime + "', "
+                + "'" + eDate + "', "
+                + "'" + eTime + "', "
+                + "'" + eventComment + "'"
                 + ")";
 
 
@@ -170,15 +191,23 @@ public class AddEventController implements Initializable {
     }
 
 
-    //Function that fills the date picker based on the clicked date 
+    //Function that fills the startDate picker based on the clicked startDate
     void autofillDatePicker() {
-        // Get selected day, month, and year and autofill date selection
-        int day = LocalDate.now().getDayOfMonth();
+        // Get selected day, month, and year and autofill startDate selection
+   /*   int day = LocalDate.now().getDayOfMonth();
         int month = LocalDate.now().getMonthValue();
-        int year = LocalDate.now().getYear();
+        int year = LocalDate.now().getYear();*/
 
-        // Set default value for datepicker
-        date.setValue(LocalDate.of(year, month, day));
+        int hours = LocalTime.now().getHour();
+        int minutes = LocalTime.now().getMinute();
+
+
+        // Set default value for datepickers and timepickers
+        startDate.setValue(LocalDate.now());
+        endDate.setValue(LocalDate.now());
+
+        startTime.setValue(LocalTime.of(hours,minutes));
+        endTime.setValue(LocalTime.of(hours+1,minutes));
     }
 
     /**
@@ -193,7 +222,7 @@ public class AddEventController implements Initializable {
         //****************************************************
 
 
-        //Fill the date picker
+        //Fill the startDate picker
         autofillDatePicker();
 
         //Get the list of exisitng terms from the database and show them in the correspondent drop-down menu
@@ -201,7 +230,7 @@ public class AddEventController implements Initializable {
             //Get terms from database and store them in the ObservableList variable "terms"
             ObservableList<String> terms = databaseHandler.getListOfCategories();
             //Show list of terms in the drop-down menu
-            termSelect.setItems(terms);
+            categorieSelect.setItems(terms);
         } catch (SQLException ex) {
             Logger.getLogger(AddEventController.class.getName()).log(Level.SEVERE, null, ex);
         }

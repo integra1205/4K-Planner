@@ -241,7 +241,7 @@ public class DBHandler {
 
                 boolean dataExistsInTable = checkIfTableIsEmpty(TableName);
                 if (!dataExistsInTable) {
-                    String query2 = "INSERT INTO " + TableName + " VALUES('TestCalendar', '2019-05-05', '2019-18-05')";
+                    String query2 = "INSERT INTO " + TableName + " VALUES('TestCalendar', '2019-05-05', '2019-05-18')";
                     stmt.execute(query2);
                     System.out.println("Default values SUCCESSFULLY inserted Table " + TableName + "!!!");
                 } else {
