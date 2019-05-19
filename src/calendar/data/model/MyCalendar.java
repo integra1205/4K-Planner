@@ -35,6 +35,7 @@ public class MyCalendar {
     //public set this day as a start day for created calendar
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private String calendar_start_date = sdf.format(new GregorianCalendar().getTime());
+    private String calendar_update_date = sdf.format(new GregorianCalendar().getTime());
 
     private int calendar_start_year = LocalDate.now().getYear();
     private int calendar_start_month = LocalDate.now().getMonthValue();
@@ -49,6 +50,13 @@ public class MyCalendar {
 
     public void setCalendar_start_date(String calendar_start_date) {
         this.calendar_start_date = calendar_start_date;
+    }
+    public String getCalendar_update_date() {
+        return calendar_update_date;
+    }
+
+    public void setCalendar_update_date(String calendar_update_date) {
+        this.calendar_update_date = calendar_update_date;
     }
 
     public int getCalendar_start_year() {
@@ -67,19 +75,35 @@ public class MyCalendar {
         this.calendar_start_year = calendar_start_year;
     }
 
-    public enum Month {
-        JANUARY,
-        FEBRUARY,
-        MARCH,
-        APRIL,
-        MAY,
-        JUNE,
-        JULY,
-        AUGUST,
-        SEPTEMBER,
-        OCTOBER,
-        NOVEMBER,
-        DECEMBER
+    public String getMonth(int index) {
+        switch (index)
+        {
+            case 1:
+                return "JANUARY";
+            case 2:
+                return "FEBRUARY";
+            case 3:
+                return "MARCH";
+            case 4:
+                return "APRIL";
+            case 5:
+                return "MAY";
+            case 6:
+                return "JUNE";
+            case 7:
+                return "JULY";
+            case 8:
+                return "AUGUST";
+            case 9:
+                return "SEPTEMBER";
+            case 10:
+                return "OCTOBER";
+            case 11:
+                return "NOVEMBER";
+            case 12:
+                return "DECEMBER";
+        }
+        return "JANUARY";
     }
 
     //Function that returns a month Index based on the given month name

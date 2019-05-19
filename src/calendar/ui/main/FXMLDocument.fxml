@@ -35,15 +35,22 @@
                            <content>
                               <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                  <children>
-                                    <HBox prefHeight="80.0" prefWidth="200.0">
+                                    <VBox prefHeight="165.0" prefWidth="800.0">
                                        <children>
-                                          <JFXDatePicker fx:id="selectedDate" defaultColor="#940056" prefHeight="40.0" prefWidth="269.0" styleClass="calendar_pane">
-                                             <HBox.margin>
-                                                <Insets left="240.0" top="20.0" />
-                                             </HBox.margin>
-                                          </JFXDatePicker>
-                                       </children>
-                                    </HBox>
+                                          <Label fx:id="thisTime" prefHeight="47.0" prefWidth="348.0">
+                                             <VBox.margin>
+                                                <Insets left="30.0" top="30.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="thisDate" prefHeight="41.0" prefWidth="347.0">
+                                             <VBox.margin>
+                                                <Insets left="30.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                       </children></VBox>
                                     <JFXTabPane prefHeight="800.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
                                        <tabs>
                                           <Tab fx:id="dayPan" text="Day's view">
@@ -60,8 +67,27 @@
                                              <content>
                                                 <VBox fx:id="vBoxMonth" prefHeight="200.0" prefWidth="100.0">
                                                    <children>
-                                                      <HBox fx:id="weekdayHeader" prefHeight="50.0" />
-                                                      <GridPane fx:id="monthView" prefHeight="800.0">
+                                                      <HBox fx:id="monthInfo" prefHeight="49.0" prefWidth="800.0">
+                                                         <children>
+                                                            <Label fx:id="monthLbl" prefHeight="45.0" prefWidth="153.0">
+                                                               <HBox.margin>
+                                                                  <Insets left="30.0" />
+                                                               </HBox.margin>
+                                                               <font>
+                                                                  <Font size="13.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <Label fx:id="yearLbl" prefHeight="37.0" prefWidth="160.0">
+                                                               <HBox.margin>
+                                                                  <Insets left="30.0" />
+                                                               </HBox.margin>
+                                                               <font>
+                                                                  <Font size="13.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children></HBox>
+                                                      <HBox fx:id="weekdayHeader" prefHeight="54.0" prefWidth="800.0" />
+                                                      <GridPane fx:id="monthView" prefHeight="702.0" prefWidth="800.0">
                                                         <columnConstraints>
                                                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -153,7 +179,7 @@
                            </VBox.margin></Line>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="278.0" text="Calendar Options:" textAlignment="CENTER">
                            <VBox.margin>
-                              <Insets top="100.0" />
+                              <Insets top="80.0" />
                            </VBox.margin>
                         </Label>
                         <JFXButton id="menuButton" onMouseClicked="#newCalendar" prefHeight="37.0" prefWidth="235.0" text="Create New Calendar">
@@ -214,9 +240,14 @@
                <children>
                   <VBox prefHeight="800.0" prefWidth="321.0" stylesheets="@../style/menuStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
+                        <JFXDatePicker fx:id="selectedDate" defaultColor="#940056" prefHeight="40.0" prefWidth="193.0" styleClass="calendar_pane">
+                           <VBox.margin>
+                              <Insets left="50.0" top="35.0" />
+                           </VBox.margin>
+                        </JFXDatePicker>
                         <Label alignment="CENTER" prefHeight="36.0" prefWidth="291.0" text="Calendar Categories:">
                            <VBox.margin>
-                              <Insets top="115.0" />
+                              <Insets top="90.0" />
                            </VBox.margin></Label>
                         <VBox fx:id="colorRootPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="299.0" VBox.vgrow="NEVER">
                            <children>
