@@ -7,10 +7,13 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.util.Locale;
+
 public class AcademicCalendar extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        Locale.setDefault(Locale.ENGLISH);
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
 
         // Set main window icon
