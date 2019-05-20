@@ -60,8 +60,6 @@ public class FXMLDocumentController implements Initializable {
     private Label thisDate;
     @FXML
     private Label monthLbl;
-    @FXML
-    private Label yearLbl;
 
     @FXML
     private HBox weekdayHeader;
@@ -89,7 +87,7 @@ public class FXMLDocumentController implements Initializable {
     private Tab yearPan;
 
     @FXML
-    private ScrollPane scrollPane;
+    private ScrollPane scrollPaneMonth;
 
 
     //--------- Database Handler -----------------------------------------
@@ -133,8 +131,6 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private Label calendarNameLbl;
-    @FXML
-    private Label todayLbl;
 
     // Other global variables for the class
     public static boolean workingOnCalendar = false;
@@ -336,10 +332,9 @@ public class FXMLDocumentController implements Initializable {
 
         // Get the current VIEW
         int year = MyCalendar.getInstance().viewing_year;
-        int month = MyCalendar.getInstance().viewing_month;
+        int month = MyCalendar.getInstance().viewing_month+1;
 
-        monthLbl.setText(MyCalendar.getInstance().getMonth(month));
-        monthLbl.setText(Integer.toString(year));
+        monthLbl.setText(MyCalendar.getInstance().getMonth(month) + "  " + Integer.toString(year));
 
         // Note: Java's Gregorian Calendar class gives us the right
         // "first day of the month" for a given calendar & month
@@ -394,7 +389,6 @@ public class FXMLDocumentController implements Initializable {
 
         // Set calendar name label
         calendarNameLbl.setText(MyCalendar.getInstance().calendar_name);
-        todayLbl.setText(LocalDate.now().toString());
         selectedDate.setValue(LocalDate.now());
 
         // Load year and month selection
@@ -781,7 +775,7 @@ public class FXMLDocumentController implements Initializable {
         // Set up Row Constraints
         for (int i = 0; i < 7; i++) {
             RowConstraints row = new RowConstraints();
-            row.setMinHeight(scrollPane.getHeight() / 7);
+            row.setMinHeight(scrollPaneMonth.getHeight() / 7);
             monthView.getRowConstraints().add(row);
         }
     }
@@ -836,7 +830,7 @@ public class FXMLDocumentController implements Initializable {
 
 
         // Set Depths
-        JFXDepthManager.setDepth(scrollPane, 1);
+        JFXDepthManager.setDepth(scrollPaneMonth, 1);
 
         //*** Instantiate DBHandler object *******************
         databaseHandler = new DBHandler();
