@@ -13,15 +13,16 @@ public class MyCalendar {
     }
 
     // for adding/editing events
-    LocalDate startDate;
-    LocalDate endDate;
-    LocalTime startTime;
-    LocalTime endTime;
+    public LocalDate event_startDate;
+    public LocalDate event_endDate;
+    public LocalTime event_startTime;
+    public LocalTime event_endTime;
     public int event_day;
     public int event_month;
     public int event_year;
     public String event_subject;
     public int event_categorie_id;
+    public String event_comment;
 
     // for the year, month, week and day the user has open, is "viewing"
     public int viewing_day;

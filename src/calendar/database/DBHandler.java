@@ -159,7 +159,7 @@ public class DBHandler {
                         + "EventStartTime time not null,\n"
                         + "EventEndDate date not null,\n"
                         + "EventEndTime time not null,\n"
-                        + "EventComment varchar(1500), \n"
+                        + "EventComment varchar(150), \n"
                         + "constraint " + TableName + "_FK1 foreign key (CategorieID) references CATEGORIES(CategorieID),\n"
                         + "constraint " + TableName + "_FK2 foreign key (CalendarName) references CALENDARS(CalendarName)"
                         + ")";
