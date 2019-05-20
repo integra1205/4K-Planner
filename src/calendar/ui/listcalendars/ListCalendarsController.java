@@ -57,6 +57,8 @@ public class ListCalendarsController implements Initializable {
     private TableColumn<calendar.ui.main.Calendar, String> nameCol;
     @FXML
     private TableColumn<calendar.ui.main.Calendar, String> startCol;
+    @FXML
+    private TableColumn<calendar.ui.main.Calendar, String> updateCol;
     
     public void setMainController(FXMLDocumentController mainController) {
         this.mainController = mainController ;
@@ -64,7 +66,8 @@ public class ListCalendarsController implements Initializable {
     
     private void initCol() {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        startCol.setCellValueFactory(new PropertyValueFactory<>("startYear"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        updateCol.setCellValueFactory(new PropertyValueFactory<>("updateDate"));
     }
 
      private void loadData() { 
@@ -76,10 +79,10 @@ public class ListCalendarsController implements Initializable {
         try {
             while (result.next()) {
                 String calendarName = result.getString("CalendarName");
-                String startYear = Integer.toString(result.getInt("StartYear"));
                 String startingDate = result.getString("StartDate");
+                String updatingDate = result.getString("UpdateDate");
                 
-                list.add(new calendar.ui.main.Calendar(calendarName, startYear, startingDate));
+                list.add(new calendar.ui.main.Calendar(calendarName, startingDate, updatingDate));
 
                
             }
@@ -156,8 +159,8 @@ public class ListCalendarsController implements Initializable {
             // Get selected calendar from table
             calendar.ui.main.Calendar cal = tableView.getSelectionModel().getSelectedItem();
             MyCalendar.getInstance().calendar_name = cal.getName();
-            MyCalendar.getInstance().setCalendar_start_year(Integer.parseInt(cal.getStartYear()));
             MyCalendar.getInstance().setCalendar_start_date(cal.getStartDate());
+            MyCalendar.getInstance().setCalendar_update_date(cal.getUpdateDate());
 
             // Load the calendar in the main window
             mainController.calendarGenerate();

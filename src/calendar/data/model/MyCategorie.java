@@ -1,11 +1,11 @@
-package calendar.ui.main;
+package calendar.data.model;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class Categorie {
+public class MyCategorie {
     private final SimpleStringProperty categorieName;
 
-    public Categorie(String categorieName) {
+    public MyCategorie(String categorieName) {
         this.categorieName = new SimpleStringProperty(categorieName);
     }
 

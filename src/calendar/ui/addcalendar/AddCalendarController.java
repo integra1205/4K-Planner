@@ -79,7 +79,8 @@ public class AddCalendarController implements Initializable {
                 //Store calendar's information in String and Integer variables that will be used to build the query to insert it into the database
                 String calName2 = calendarName.getText();
                 String startingDate = MyCalendar.getInstance().getCalendar_start_date();
-                int startingYear = MyCalendar.getInstance().getCalendar_start_year();
+                String updatingDate = MyCalendar.getInstance().getCalendar_update_date();
+                //int startingYear = MyCalendar.getInstance().getCalendar_start_year();
 
                 //************************************************************************
                 //************************************************************************
@@ -92,7 +93,7 @@ public class AddCalendarController implements Initializable {
 
                 // Query that inserts the new calendar into the database
                 String calendarQuery = "INSERT INTO CALENDARS VALUES ("
-                        + "'" + calName2 + "', " + startingYear + "," + "'" + startingDate + "')";
+                        + "'" + calName2 + "', '" + startingDate + "'," + "'" + updatingDate + "')";
 
                 //Insert the new calendar into the database and show a message wheher the insertion was successful or not
                 if(databaseHandler.executeAction(calendarQuery)) 
