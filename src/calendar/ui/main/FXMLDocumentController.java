@@ -38,9 +38,11 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Optional;
@@ -73,10 +75,29 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Tab dayPan;
 
-    @FXML
-    private FlowPane weekView;
+
+    // WEEK
     @FXML
     private Tab weekPan;
+
+    @FXML
+    private VBox vBoxWeek;
+
+    @FXML
+    private HBox weekInfo;
+
+    @FXML
+    private Label weekLbl;
+
+    @FXML
+    private ScrollPane scrollPaneWeek;
+
+    @FXML
+    private HBox weekdayHeaderForWeek;
+
+    @FXML
+    private GridPane weekView;
+
 
     @FXML
     private GridPane monthView;
@@ -88,6 +109,9 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private ScrollPane scrollPaneMonth;
+
+
+
 
 
     //--------- Database Handler -----------------------------------------
@@ -296,9 +320,10 @@ public class FXMLDocumentController implements Initializable {
                         MyCalendar.getInstance().viewing_year = newValue.getYear();
                         MyCalendar.getInstance().viewing_day = newValue.getDayOfYear();
                         MyCalendar.getInstance().viewing_week = newValue.getDayOfWeek().getValue();
-
+                        MyCalendar.getInstance().viewing_day_of_month = newValue.getDayOfMonth();
                         // Update view
                         repaintView();
+
                     }
                 }
         );
@@ -325,7 +350,7 @@ public class FXMLDocumentController implements Initializable {
 
     private void loadCalendarLabels() {
         loadMonthLabels();
-
+        loadWeekLabels();
     }
 
     private void loadMonthLabels() {
@@ -379,9 +404,35 @@ public class FXMLDocumentController implements Initializable {
 
                     dayOfMonth.getChildren().add(lbl);
                 }
-
                 lblCount++;
             }
+        }
+    }
+
+    // WEEK
+    private void loadWeekLabels() {
+
+        // Get the current VIEW
+        int year = MyCalendar.getInstance().viewing_year;
+        int month = MyCalendar.getInstance().viewing_month + 1;
+        LocalDate[] allDaysOfSelectedWeek = MyCalendar.getInstance().getAllDaysOfSelectedWeek();
+        int dayCount = 0;
+
+        weekLbl.setText("from " + allDaysOfSelectedWeek[0] + " to " + allDaysOfSelectedWeek[6]);
+
+        // Go through calendar grid
+        for (Node node : weekView.getChildren()) {
+
+            VBox dayOfWeek = (VBox) node;
+            dayOfWeek.getChildren().clear();
+            dayOfWeek.setStyle("-fx-backgroud-color: white");
+            dayOfWeek.setStyle("-fx-font: 14px \"System\" ");
+
+            Label lbl = new Label(Integer.toString(allDaysOfSelectedWeek[dayCount].getDayOfMonth()));
+            lbl.setPadding(new Insets(5));
+            lbl.setStyle("-fx-text-fill:darkslategray");
+            dayOfWeek.getChildren().add(lbl);
+            dayCount++;
         }
     }
 
@@ -421,9 +472,126 @@ public class FXMLDocumentController implements Initializable {
         //TODO
     }
 
+    //WEEK
     private void populateWeekWithEvents() {
         //TODO
+        // Get viewing calendar
+
+        String calendarName = MyCalendar.getInstance().calendar_name;
+        String currentMonth = MyCalendar.getInstance().getMonth(MyCalendar.getInstance().viewing_month + 1);
+        int currentMonthIndex = MyCalendar.getInstance().viewing_month + 1;
+        int currentYear = MyCalendar.getInstance().viewing_year;
+        LocalDate[] currentWeek = MyCalendar.getInstance().getAllDaysOfSelectedWeek();
+
+        // Query to get ALL Events from the selected calendar!!
+        String getAllEventsQuery = "SELECT * From EVENTS WHERE CalendarName='" + calendarName + "'";
+
+        // Store the results here
+        ResultSet result = databaseHandler.executeQuery(getAllEventsQuery);
+
+        try {
+            while (result.next()) {
+
+                // Get date for the event
+                Date startDate = result.getDate("EventStartDate");
+                Date endDate = result.getDate("EventEndDate");
+                Time startTime = result.getTime("EventStartTime");
+                Time endTime = result.getTime("EventEndTime");
+                String eventDescript = result.getString("EventDescription");
+                int eventCategorieID = result.getInt("CategorieID");
+
+                // Check for year we have selected
+                if (currentYear == startDate.toLocalDate().getYear()) {
+                    if  (startDate.toLocalDate().isEqual(currentWeek[0]) ||
+                         startDate.toLocalDate().isEqual(currentWeek[6]) ||
+                        (startDate.toLocalDate().isAfter(currentWeek[0]) && startDate.toLocalDate().isBefore(currentWeek[6])) ||
+                        (startDate.toLocalDate().isBefore(currentWeek[0]) && endDate.toLocalDate().isAfter(currentWeek[0])) ||
+                         endDate.toLocalDate().isEqual(currentWeek[0])) {
+
+                        // Get day for the month
+                        int startDay = startDate.toLocalDate().getDayOfMonth();
+                        int finishDay = endDate.toLocalDate().getDayOfMonth();
+
+                        // Display decription of the event given it's day
+                        showDateWeek(startDay, eventDescript, eventCategorieID);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AddEventController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
+    public void showDateWeek(int dayNumber, String descript, int categorieID) {
+
+        Image img = new Image(getClass().getClassLoader().getResourceAsStream("calendar/ui/icons/icon2.png"));
+        ImageView imgView = new ImageView();
+        imgView.setImage(img);
+
+        for (Node node : weekView.getChildren()) {
+
+            // Get the current day
+            VBox day = (VBox) node;
+
+            // Don't look at any empty days (they at least must have a day label!)
+            if (!day.getChildren().isEmpty()) {
+
+                // Get the day label for that day
+                Label lbl = (Label) day.getChildren().get(0);
+
+                // Get the number
+                int currentNumber = Integer.parseInt(lbl.getText());
+
+                // Did we find a match?
+                if (currentNumber == dayNumber) {
+
+                    // Add an event label with the given description
+                    Label eventLbl = new Label(descript);
+                    eventLbl.setGraphic(imgView);
+                    eventLbl.getStyleClass().add("event-label");
+
+                    // Save the categorie ID in accessible text
+                    eventLbl.setAccessibleText(Integer.toString(categorieID));
+                    System.out.println(eventLbl.getAccessibleText());
+
+                    eventLbl.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+                        editEvent((VBox) eventLbl.getParent(), eventLbl.getText(), eventLbl.getAccessibleText());
+
+                    });
+
+                    // Get categorie color from categorie's table
+                    String eventRGB = databaseHandler.getCategorieColor(categorieID);
+
+                    // Parse for rgb values
+                    String[] colors = eventRGB.split("-");
+                    String red = colors[0];
+                    String green = colors[1];
+                    String blue = colors[2];
+
+                    System.out.println("Color; " + red + green + blue);
+
+                    eventLbl.setStyle("-fx-background-color: rgb(" + red +
+                            ", " + green + ", " + blue + ", " + 1 + ");");
+
+                    // Stretch to fill box
+                    eventLbl.setMaxWidth(Double.MAX_VALUE);
+
+                    // Mouse effects
+                    eventLbl.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
+                        eventLbl.getScene().setCursor(Cursor.HAND);
+                    });
+
+                    eventLbl.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> {
+                        eventLbl.getScene().setCursor(Cursor.DEFAULT);
+                    });
+
+                    // Add label to calendar
+                    day.getChildren().add(eventLbl);
+                }
+            }
+        }
+    }
+
 
     private void populateDayWithEvents() {
         //TODO
@@ -539,6 +707,7 @@ public class FXMLDocumentController implements Initializable {
             }
         }
     }
+
 
 /*    public void exportCalendarPDF() {
         TableView<MyEvent> table = new TableView<MyEvent>();
@@ -811,6 +980,35 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
+    //WEEK
+    public void initializeCalendarWeekdayHeaderWeek() {
+
+        // Weekday names
+        String[] weekAbbr = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+
+        for (int i = 0; i < weekAbbr.length; i++) {
+
+            // Make new pane and label of weekday
+            StackPane pane = new StackPane();
+            pane.getStyleClass().add("weekday-header");
+
+            // Make panes take up equal space
+            HBox.setHgrow(pane, Priority.ALWAYS);
+            pane.setMaxWidth(Double.MAX_VALUE);
+
+            // Note: After adding a label to this, it tries to resize itself..
+            // So I'm setting a minimum width.
+            pane.setMinWidth(weekdayHeaderForWeek.getPrefWidth() / 7);
+
+            // Add it to the header
+            weekdayHeaderForWeek.getChildren().add(pane);
+
+            // Add weekday name
+            pane.getChildren().add(new Label(weekAbbr[i]));
+        }
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -822,6 +1020,7 @@ public class FXMLDocumentController implements Initializable {
         initializeDayView();
 
         initializeWeekView();
+        initializeCalendarWeekdayHeaderWeek();
 
         initializeMonthView();
         initializeCalendarWeekdayHeader();
@@ -866,8 +1065,28 @@ public class FXMLDocumentController implements Initializable {
         //TODO: inizialize year view
     }
 
+    //WEEK
     private void initializeWeekView() {
         //TODO: initialize week view
+
+        // Go through each calendar grid location, or each "day" (7)
+        int cols = 7;
+        for (int i = 0; i < cols; i++) {
+
+            // Add VBox and style it
+            VBox vPane = new VBox();
+            vPane.getStyleClass().add("calendar_pane");
+            vPane.setMinWidth(weekdayHeaderForWeek.getPrefWidth() / cols);
+
+            vPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+                addEvent(vPane);
+            });
+
+            GridPane.setVgrow(vPane, Priority.ALWAYS);
+
+            // Add it to the grid
+            weekView.add(vPane, i, 0);
+        }
     }
 
     private void initializeDayView() {
