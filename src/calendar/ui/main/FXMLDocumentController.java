@@ -377,7 +377,6 @@ public class FXMLDocumentController implements Initializable {
 
         // Load year and month selection
         MyCalendar.getInstance().viewing_year = selectedDate.getValue().getYear();
-
         MyCalendar.getInstance().viewing_month =
                 MyCalendar.getInstance().getMonthIndex(selectedDate.getValue().getMonth().toString());
         // Update view
@@ -803,7 +802,7 @@ public class FXMLDocumentController implements Initializable {
 
         initializeMonthView();
         initializeCalendarWeekdayHeader();
-
+        
         initializeYearView();
 
 
@@ -832,9 +831,11 @@ public class FXMLDocumentController implements Initializable {
         //TODO: initialize week view
     }
 
+
     private void initializeDayView() {
         //TODO: initialize day view
     }
+
 
     //**********************************************************************************
     //**********************************************************************************
