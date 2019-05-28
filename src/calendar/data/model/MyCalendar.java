@@ -1,8 +1,10 @@
 package calendar.data.model;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.GregorianCalendar;
 
 public class MyCalendar {
@@ -29,6 +31,8 @@ public class MyCalendar {
     public int viewing_week;
     public int viewing_month;
     public int viewing_year;
+    public  int viewing_day_of_month;
+
 
     // for the current calendar being worked on
     public String calendar_name;
@@ -138,4 +142,29 @@ public class MyCalendar {
         }
         return 0;
     }
+
+
+    public LocalDate getSelectedFullDate(){
+        return LocalDate.of(viewing_year, viewing_month+1, viewing_day_of_month);  //+1 because number of month from 0
+    }
+
+    // return days of selected week? whwre 0 is Monday
+    public LocalDate[] getAllDaysOfSelectedWeek(){
+        LocalDate[] allDaysOfSelectedWeek =new LocalDate[7];
+        LocalDate startOfWeek;
+
+        if (getSelectedFullDate().getDayOfWeek()==DayOfWeek.MONDAY){
+            startOfWeek=getSelectedFullDate();
+        }else {
+            startOfWeek=getSelectedFullDate().with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+        }
+
+        for (int i = 0; i< allDaysOfSelectedWeek.length; i++){
+            allDaysOfSelectedWeek[i]=startOfWeek.plusDays(i);
+        }
+        return allDaysOfSelectedWeek;
+    }
+
+
+
 }
