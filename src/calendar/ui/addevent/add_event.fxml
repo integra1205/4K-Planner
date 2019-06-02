@@ -3,7 +3,9 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="249.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calendar.ui.addevent.AddEventController">
+<AnchorPane fx:id="rootPane" prefHeight="370.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calendar.ui.addevent.AddEventController">
    <children>
       <HBox id="header" fx:id="header" prefHeight="35.0" prefWidth="340.0" stylesheets="@../style/materialButtonStyle.css">
          <children>
@@ -50,9 +52,24 @@
                   <Font size="13.0" />
                </font>
             </JFXTextField>
-            <JFXComboBox fx:id="termSelect" focusColor="#4d4d4d" layoutX="10.0" layoutY="102.0" prefHeight="25.0" prefWidth="166.0" promptText="Categorie" />
-            <JFXDatePicker fx:id="date" promptText="Date of Event" />
+            <JFXComboBox fx:id="categorieSelect" focusColor="#4d4d4d" layoutX="10.0" layoutY="102.0" prefHeight="25.0" prefWidth="166.0" promptText="Categorie" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <JFXTimePicker fx:id="startTime" prefHeight="200.0" prefWidth="200.0" promptText="Start Time" />
+                  <JFXDatePicker fx:id="startDate" promptText="Start Date" />
+               </children></HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <JFXTimePicker fx:id="endTime" prefHeight="200.0" prefWidth="200.0" promptText="End Time" />
+                  <JFXDatePicker fx:id="endDate" promptText="End Date" />
+               </children>
+            </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" />
+            <JFXTextArea fx:id="comment" prefHeight="200.0" prefWidth="200.0" promptText="Your comment">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </JFXTextArea>
          </children>
       </VBox>
       <HBox layoutY="181.0" prefHeight="41.0" prefWidth="340.0" stylesheets="@../style/materialButtonStyle.css" AnchorPane.bottomAnchor="0.0">

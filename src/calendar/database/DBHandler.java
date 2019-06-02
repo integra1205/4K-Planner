@@ -2,7 +2,6 @@ package calendar.database;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -17,7 +16,6 @@ public class DBHandler {
     //Arrays that contain the default categories
     private static String[] categories = {"Work", "Study", "Sport", "Vacation",
             "Birthdays", "Holidays", "Other"};
-
     //Variable that contains the default color for the labels of events
     private static String defaultColor = "255-255-255";
 
@@ -61,7 +59,7 @@ public class DBHandler {
             ArrayList<String> auxList2 = new ArrayList();
             auxList2.add("Work");
             auxList2.add("Study");
-            ArrayList<String> auxListOfFilteredEvents = this.getFilteredEvents(auxList2, "Test Name");
+            ArrayList<String> auxListOfFilteredEvents = this.getFilteredEvents(auxList2, "TestCalendar");
         }
     }
     //***************************************************************************************************************************************************************
@@ -97,9 +95,9 @@ public class DBHandler {
                 System.out.println("Table " + TableName + " already exists. Ready to go!");
             } else {
                 String query1 = "CREATE TABLE " + TableName + "("
-                        + "CalendarName varchar(100) primary key not null,\n"
-                        + "StartYear integer,\n"
-                        + "StartDate date"
+                        + "CalendarName varchar(45) primary key not null,\n"
+                        + "StartDate date, \n"
+                        + "UpdateDate date"
                         + ")";
                 stmt.execute(query1);
             }
@@ -153,11 +151,15 @@ public class DBHandler {
                 System.out.println("Table " + TableName + " already exists. Ready to go!");
             } else {
                 String query1 = "CREATE TABLE " + TableName + "("
-                        + "EventDescription varchar(250) not null,\n"
-                        + "EventDate date not null,\n"
+                        + "EventID integer primary key not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),\n"
+                        + "EventDescription varchar(45) not null,\n"
                         + "CategorieID integer not null,\n"
-                        + "CalendarName varchar(100) not null,\n"
-                        + "constraint " + TableName + "_PK primary key(EventDescription, EventDate, CategorieID, CalendarName),\n"
+                        + "CalendarName varchar(45) not null,\n"
+                        + "EventStartDate date not null,\n"
+                        + "EventStartTime time not null,\n"
+                        + "EventEndDate date not null,\n"
+                        + "EventEndTime time not null,\n"
+                        + "EventComment varchar(150), \n"
                         + "constraint " + TableName + "_FK1 foreign key (CategorieID) references CATEGORIES(CategorieID),\n"
                         + "constraint " + TableName + "_FK2 foreign key (CalendarName) references CALENDARS(CalendarName)"
                         + ")";
@@ -239,7 +241,7 @@ public class DBHandler {
 
                 boolean dataExistsInTable = checkIfTableIsEmpty(TableName);
                 if (!dataExistsInTable) {
-                    String query2 = "INSERT INTO " + TableName + " VALUES('Test Name', 2019, '2019-08-01')";
+                    String query2 = "INSERT INTO " + TableName + " VALUES('TestCalendar', '2019-05-05', '2019-05-18')";
                     stmt.execute(query2);
                     System.out.println("Default values SUCCESSFULLY inserted Table " + TableName + "!!!");
                 } else {
@@ -486,10 +488,15 @@ public class DBHandler {
                     //While there are events in the ResultSet variable, add each one of them to the ArrayList of Strings
                     while (rs.next()) {
                         //get the full row of the event info and store it in a String variable
-                        String filteredEvent = rs.getString("EventDescription") + "~"
-                                + rs.getString("EventDate") + "~"
+                        String filteredEvent = rs.getInt("EventID") + "~"
+                                + rs.getString("EventDescription") + "~"
                                 + rs.getInt("CategorieID") + "~"
-                                + rs.getString("CalendarName");
+                                + rs.getString("CalendarName")+ "~"
+                                + rs.getString("EventStartDate") + "~"
+                                + rs.getString("EventStartTime") + "~"
+                                + rs.getString("EventEndDate") + "~"
+                                + rs.getString("EventEndTime") + "~"
+                                + rs.getString("EventComment");
                         //add event to list of filtered events
                         filteredEventsList.add(filteredEvent);
                     }

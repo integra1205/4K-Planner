@@ -1,8 +1,10 @@
 package calendar.data.model;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.GregorianCalendar;
 
 public class MyCalendar {
@@ -13,21 +15,24 @@ public class MyCalendar {
     }
 
     // for adding/editing events
-    LocalDate startDate;
-    LocalDate endDate;
-    LocalTime startTime;
-    LocalTime endTime;
+    public LocalDate event_startDate;
+    public LocalDate event_endDate;
+    public LocalTime event_startTime;
+    public LocalTime event_endTime;
     public int event_day;
     public int event_month;
     public int event_year;
     public String event_subject;
     public int event_categorie_id;
+    public String event_comment;
 
     // for the year, month, week and day the user has open, is "viewing"
     public int viewing_day;
     public int viewing_week;
     public int viewing_month;
     public int viewing_year;
+    public  int viewing_day_of_month;
+
 
     // for the current calendar being worked on
     public String calendar_name;
@@ -35,6 +40,7 @@ public class MyCalendar {
     //public set this day as a start day for created calendar
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private String calendar_start_date = sdf.format(new GregorianCalendar().getTime());
+    private String calendar_update_date = sdf.format(new GregorianCalendar().getTime());
 
     private int calendar_start_year = LocalDate.now().getYear();
     private int calendar_start_month = LocalDate.now().getMonthValue();
@@ -49,6 +55,13 @@ public class MyCalendar {
 
     public void setCalendar_start_date(String calendar_start_date) {
         this.calendar_start_date = calendar_start_date;
+    }
+    public String getCalendar_update_date() {
+        return calendar_update_date;
+    }
+
+    public void setCalendar_update_date(String calendar_update_date) {
+        this.calendar_update_date = calendar_update_date;
     }
 
     public int getCalendar_start_year() {
@@ -67,19 +80,35 @@ public class MyCalendar {
         this.calendar_start_year = calendar_start_year;
     }
 
-    public enum Month {
-        JANUARY,
-        FEBRUARY,
-        MARCH,
-        APRIL,
-        MAY,
-        JUNE,
-        JULY,
-        AUGUST,
-        SEPTEMBER,
-        OCTOBER,
-        NOVEMBER,
-        DECEMBER
+    public String getMonth(int index) {
+        switch (index)
+        {
+            case 1:
+                return "JANUARY";
+            case 2:
+                return "FEBRUARY";
+            case 3:
+                return "MARCH";
+            case 4:
+                return "APRIL";
+            case 5:
+                return "MAY";
+            case 6:
+                return "JUNE";
+            case 7:
+                return "JULY";
+            case 8:
+                return "AUGUST";
+            case 9:
+                return "SEPTEMBER";
+            case 10:
+                return "OCTOBER";
+            case 11:
+                return "NOVEMBER";
+            case 12:
+                return "DECEMBER";
+        }
+        return "JANUARY";
     }
 
     //Function that returns a month Index based on the given month name
@@ -113,4 +142,29 @@ public class MyCalendar {
         }
         return 0;
     }
+
+
+    public LocalDate getSelectedFullDate(){
+        return LocalDate.of(viewing_year, viewing_month+1, viewing_day_of_month);  //+1 because number of month from 0
+    }
+
+    // return days of selected week? whwre 0 is Monday
+    public LocalDate[] getAllDaysOfSelectedWeek(){
+        LocalDate[] allDaysOfSelectedWeek =new LocalDate[7];
+        LocalDate startOfWeek;
+
+        if (getSelectedFullDate().getDayOfWeek()==DayOfWeek.MONDAY){
+            startOfWeek=getSelectedFullDate();
+        }else {
+            startOfWeek=getSelectedFullDate().with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+        }
+
+        for (int i = 0; i< allDaysOfSelectedWeek.length; i++){
+            allDaysOfSelectedWeek[i]=startOfWeek.plusDays(i);
+        }
+        return allDaysOfSelectedWeek;
+    }
+
+
+
 }

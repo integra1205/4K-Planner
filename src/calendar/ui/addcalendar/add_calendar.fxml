@@ -43,10 +43,13 @@
       </HBox>
       <VBox layoutX="10.0" layoutY="59.0" prefHeight="130.0" prefWidth="310.0" spacing="20.0">
          <children>
-            <JFXTextField fx:id="calendarName" focusColor="#4d4d4d" labelFloat="true" prefHeight="50.0" prefWidth="310.0" promptText="Name">
+            <JFXTextField fx:id="calendarName" focusColor="#4d4d4d" labelFloat="true" prefHeight="46.0" prefWidth="310.0" promptText="Name">
                <font>
                   <Font size="13.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
             </JFXTextField>
          </children>
       </VBox>
