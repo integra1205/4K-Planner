@@ -15,14 +15,11 @@ public class MyCalendar {
     }
 
     // for adding/editing events
-    public LocalDate event_startDate;
-    public LocalDate event_endDate;
-    public LocalTime event_startTime;
-    public LocalTime event_endTime;
     public int event_day;
     public int event_month;
     public int event_year;
     public String event_subject;
+    public int event_categorie;
     public int event_categorie_id;
     public String event_comment;
 
@@ -32,6 +29,7 @@ public class MyCalendar {
     public int viewing_month;
     public int viewing_year;
     public  int viewing_day_of_month;
+    public int viewing_day_of_year;
 
 
     // for the current calendar being worked on
@@ -116,36 +114,36 @@ public class MyCalendar {
         switch (month)
         {
             case "JANUARY":
-                return 0;
-            case "FEBRUARY":
                 return 1;
-            case "MARCH":
+            case "FEBRUARY":
                 return 2;
-            case "APRIL":
+            case "MARCH":
                 return 3;
-            case "MAY":
+            case "APRIL":
                 return 4;
-            case "JUNE":
+            case "MAY":
                 return 5;
-            case "JULY":
+            case "JUNE":
                 return 6;
-            case "AUGUST":
+            case "JULY":
                 return 7;
-            case "SEPTEMBER":
+            case "AUGUST":
                 return 8;
-            case "OCTOBER":
+            case "SEPTEMBER":
                 return 9;
-            case "NOVEMBER":
+            case "OCTOBER":
                 return 10;
-            case "DECEMBER":
+            case "NOVEMBER":
                 return 11;
+            case "DECEMBER":
+                return 12;
         }
         return 0;
     }
 
 
     public LocalDate getSelectedFullDate(){
-        return LocalDate.of(viewing_year, viewing_month+1, viewing_day_of_month);  //+1 because number of month from 0
+        return LocalDate.of(viewing_year, viewing_month, viewing_day_of_month);
     }
 
     // return days of selected week? whwre 0 is Monday
