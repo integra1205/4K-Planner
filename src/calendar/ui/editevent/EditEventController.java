@@ -5,21 +5,6 @@ import calendar.database.DBHandler;
 import calendar.ui.addevent.AddEventController;
 import calendar.ui.main.FXMLDocumentController;
 import com.jfoenix.controls.*;
-
-import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -33,6 +18,18 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EditEventController implements Initializable {
 
@@ -77,50 +74,52 @@ public class EditEventController implements Initializable {
     //Function that fills the date picker based on the clicked event's date
     void autofillDatePicker() {
 
-        // Get selected day, month, and year and autofill date selection
-        int day = MyCalendar.getInstance().event_day;
-        int month = MyCalendar.getInstance().event_month + 1;
-        int year = MyCalendar.getInstance().event_year;
-        LocalDate eventStartDate = MyCalendar.getInstance().event_startDate;
-        LocalTime eventStartTime = MyCalendar.getInstance().event_startTime;
-        LocalDate eventEndDate = MyCalendar.getInstance().event_endDate;
-        LocalTime eventEndTime = MyCalendar.getInstance().event_endTime;
-        int categorieID = MyCalendar.getInstance().event_categorie_id;
+        String calName = MyCalendar.getInstance().calendar_name;
+        int categorieID = MyCalendar.getInstance().event_categorie;
         String descript = MyCalendar.getInstance().event_subject;
-        String eventComment = MyCalendar.getInstance().event_comment;
 
-        //Query to get ID for the selected Term
+        String chosenCategorieName = "";
+
+        //Query to get ID for the selected CATEGORIES
         String getIDQuery = "SELECT CategorieName From CATEGORIES "
-                + "WHERE CATEGORIES.CategorieID= " + categorieID + " ";
+                + "WHERE CategorieID= " + categorieID + " ";
 
-        //Varialbe that holds the name of the current event's term based on a given term ID
-        String chosenTermName = "";
-
-        //Store the results from executing the Query
         ResultSet result = databaseHandler.executeQuery(getIDQuery);
-        //Try-catch statements that will get the ID if a result was actually gotten back from the database
+
         try {
             while (result.next()) {
                 //store ID into the corresponding variable
-                chosenTermName = result.getString("CategorieName");
+                chosenCategorieName = result.getString("CategorieName");
             }
         } catch (SQLException ex) {
             Logger.getLogger(AddEventController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // Set default value for datepickers and timepickers
-        startDate.setValue(eventStartDate);
-        startTime.setValue(eventStartTime);
-        endDate.setValue(eventEndDate);
-        endTime.setValue(eventEndTime);
+        //Store the results from executing the Query
+        String query = "select EventStartDate, EventStartTime, EventEndDate, EventEndTime, EventComment " +
+                "from EVENTS " + "WHERE CategorieID= " + categorieID + " and EventDescription= '" + descript + "' and CalendarName= '" + calName + "'";
 
-        // Fill description field
-        subject.setText(descript);
+        try {
+            ResultSet rs = databaseHandler.executeQuery(query);
+            while (rs.next()) {
 
-        //Fill term drop-down menu with current event's term
-        categorieSelect.getSelectionModel().select(chosenTermName);
+                Date staDate = rs.getDate("EventStartDate");
+                Time staTime = rs.getTime("EventStartTime");
+                Date eDate = rs.getDate("EventEndDate");
+                Time eTime = rs.getTime("EventEndTime");
+                String evComment = rs.getString("EventComment");
 
-        comment.setText(eventComment);
+                subject.setText(descript);
+                categorieSelect.getSelectionModel().select(chosenCategorieName);
+                startTime.setValue(staTime.toLocalTime());
+                startDate.setValue(LocalDate.parse(staDate.toString()));
+                endDate.setValue(LocalDate.parse(eDate.toString()));
+                endTime.setValue(eTime.toLocalTime());
+                comment.setText(evComment);
+            }
+        } catch (SQLException e) {
+            showMessage(AlertType.ERROR, "The Event cannot be modified!\nPlease check conditions!");
+        }
     }
 
     /**
@@ -128,8 +127,6 @@ public class EditEventController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-
 
         //*** Instantiate DBHandler object *******************
         databaseHandler = new DBHandler();
@@ -210,7 +207,7 @@ public class EditEventController implements Initializable {
         //Show confirmation dialog to make sure the user want to delete the selected event
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Event Deletion");
+        alert.setHeaderText("Delete Event");
         alert.setContentText("Are you sure you want to delete this event?");
         //Customize the buttons in the confirmation dialog
         ButtonType buttonTypeYes = new ButtonType("Yes");
@@ -229,7 +226,6 @@ public class EditEventController implements Initializable {
             Stage stage = (Stage) rootPane.getScene().getWindow();
             stage.close();
         }
-
     }
 
 
@@ -242,40 +238,13 @@ public class EditEventController implements Initializable {
         // Define Time format '10:15:30'
         DateTimeFormatter myTimeFormat = DateTimeFormatter.ISO_LOCAL_TIME;
 
-        //**********************************************************************
-        //*******   Get OLD INFO of the Event to be edited/upated         ******
-        //*******   which is the categorie ID, event description, event date,  ******
-        //*******   and calendar name of the event to be edited           ******
-        //**********************************************************************
-        int day = MyCalendar.getInstance().event_day;
-        int month = MyCalendar.getInstance().event_month + 1;
-        int year = MyCalendar.getInstance().event_year;
-        String eventDate = year + "-" + month + "-" + day;
-        int categorieID = MyCalendar.getInstance().event_categorie_id;
-        String descript = MyCalendar.getInstance().event_subject;
-        String calName = MyCalendar.getInstance().calendar_name;
-
-        //Get the original date of the event to be updated in the format yyyy-mm-dd
-        SimpleDateFormat auxDateFormat = new SimpleDateFormat("yyyy-mm-dd");
-        String auxDate = "empty";
-        Date auxEventDate = new Date();
-        try {
-            auxEventDate = auxDateFormat.parse(eventDate);
-            auxDate = auxDateFormat.format(auxEventDate);
-        } catch (ParseException ex) {
-            Logger.getLogger(EditEventController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        //**********************************************************************
-        //******    Get NEW INFO for the Event to be edited/updated   **********
-        //**********************************************************************
-
         // Get the date value from the date picker
         String newStartDate = startDate.getValue().format(myFormat);
         String newStartTime = startTime.getValue().format(myTimeFormat);
 
         String newEndDate = endDate.getValue().format(myFormat);
         String newEndTime = endTime.getValue().format(myTimeFormat);
+
         // Subject for the event
         String newEventSubject = subject.getText();
         // Get categorie that was selected by the user
@@ -283,17 +252,29 @@ public class EditEventController implements Initializable {
         // Get comment that was inputed by the user
         String comments = comment.getText();
 
-
-        //Check if the event descritption contains the character ~ because it cannot contain it due to database and filtering issues
-        if (newEventSubject.contains("~")) {
-            //Show message indicating that the event description cannot contain the character ~
-            Alert alertMessage = new Alert(AlertType.WARNING);
-            alertMessage.setHeaderText(null);
-            alertMessage.setContentText("Event Description cannot contain the character ~");
-            alertMessage.showAndWait();
+        //Check if the user inputted information in all required fields!
+        if (subject.getText().isEmpty() || categorieSelect.getSelectionModel().isEmpty()
+                || startDate.getValue() == null || startTime.getValue() == null
+                || endDate.getValue() == null || endTime.getValue() == null) {
+            showMessage(AlertType.ERROR, "Please fill out all fields");
             return;
         }
 
+        //Check if the event descritption contains the character ~ because it cannot contain it due to database and filtering issues
+        else if (newEventSubject.contains("~")) {
+            //Show message indicating that the event description cannot contain the character ~
+            showMessage(AlertType.WARNING, "Event Description cannot contain the character ~");
+            return;
+        } else if (startDate.getValue().isAfter(endDate.getValue())) {
+            showMessage(AlertType.ERROR, "The start date can never be after the end date");
+            return;
+        } else if (startDate.getValue().equals(endDate.getValue())) {
+
+            if (startTime.getValue().isAfter(endTime.getValue())) {
+                showMessage(AlertType.ERROR, "The start time can not be after the end time if both are on the same date");
+                return;
+            }
+        }
 
         //Get the ID of the new categorie selected by the user when editing the event's information
         int newCategorie = databaseHandler.getCategorieID(categorie);
@@ -303,77 +284,53 @@ public class EditEventController implements Initializable {
                 + " SET "
                 + "EventDescription='" + newEventSubject + "', "
                 + "CategorieID=" + newCategorie + ","
-                + "EVENTS.CalendarName='" + calName + "', "
+                + "EVENTS.CalendarName='" + MyCalendar.getInstance().calendar_name + "', "
                 + "EventStartDate='" + newStartDate + "', "
                 + "EventStartTime='" + newStartTime + "', "
                 + "EventEndDate='" + newEndDate + "', "
                 + "EventEndTime='" + newEndTime + "', "
                 + "EventComment='" + comments + "'"
                 + " WHERE "
-                + "EVENTS.EventDescription='" + descript + "' AND "
-                //+ "EVENTS.EventStartDate='" + auxDate + "' AND "
-                + "EVENTS.CategorieID=" + categorieID + " AND "
-                + "EVENTS.CalendarName='" + calName + "' ";
+                + "EVENTS.EventDescription='" + MyCalendar.getInstance().event_subject + "' AND "
+                //+ "EVENTS.EventStartDate='" + eventStartDate + "' AND "
+                + "EVENTS.CategorieID=" + MyCalendar.getInstance().event_categorie + " AND "
+                + "EVENTS.CalendarName='" + MyCalendar.getInstance().calendar_name + "' ";
 
 
         //Execute query in otder to update the info for the selected event
         //and
         //Check if the update of the event in the database was successful, and show message either if it was or not
         if (databaseHandler.executeAction(updateEventQuery)) {
-            Alert alertMessage = new Alert(AlertType.INFORMATION);
-            alertMessage.setHeaderText(null);
-            alertMessage.setContentText("Event was updated successfully");
-            alertMessage.showAndWait();
+            showMessage(AlertType.INFORMATION, "Event was updated successfully");
 
             // Update view
             mainController.repaintView();
 
-        } else //if there is an error
-        {
-            Alert alertMessage = new Alert(AlertType.ERROR);
-            alertMessage.setHeaderText(null);
-            alertMessage.setContentText("Updating Event Failed!\nThere is already an event with the same information");
-            alertMessage.showAndWait();
+            //if there is an error
+        } else {
+            showMessage(AlertType.ERROR, "Updating Event Failed!\nThere is already an event with the same information");
         }
 
         // Close the window
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.close();
-
     }
 
 
     public void deleteEvent() {
 
-        //**********************************************************************
-        //*******   Get INFO of the Event to be edited/upated             ******
-        //*******   which is the term ID, event description, event date,  ******
-        //*******   and calendar name of the event to be edited           ******
-        //**********************************************************************
-        int day = MyCalendar.getInstance().event_day;
-        int month = MyCalendar.getInstance().event_month + 1;
-        int year = MyCalendar.getInstance().event_year;
-        String eventDate = year + "-" + month + "-" + day;
-        int categorieID = MyCalendar.getInstance().event_categorie_id;
+        int categorieID = MyCalendar.getInstance().event_categorie;
         String descript = MyCalendar.getInstance().event_subject;
         String calName = MyCalendar.getInstance().calendar_name;
 
-        //Get the original date of the event to be updated in the format yyyy-mm-dd
-        SimpleDateFormat auxDateFormat = new SimpleDateFormat("yyyy-mm-dd");
-        String auxDate = "empty";
-        Date auxEventDate = new Date();
-        try {
-            auxEventDate = auxDateFormat.parse(eventDate);
-            auxDate = auxDateFormat.format(auxEventDate);
-        } catch (ParseException ex) {
-            Logger.getLogger(EditEventController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        //String eventStartDate = dateFormat.format(new Date(MyCalendar.getInstance().event_year, MyCalendar.getInstance().event_month, MyCalendar.getInstance().event_day));
 
         //Query that will delete the selected event
         String deleteEventQuery = "DELETE FROM EVENTS "
                 + "WHERE "
                 + "EVENTS.EventDescription='" + descript + "' AND "
-                //+ "EVENTS.EventStartDate='" + auxDate + "' AND "
+                //+ "EVENTS.EventStartDate='" + eventStartDate + "' AND "
                 + "EVENTS.CategorieID=" + categorieID + " AND "
                 + "EVENTS.CalendarName='" + calName + "' ";
 
@@ -382,10 +339,7 @@ public class EditEventController implements Initializable {
 
         if (eventWasDeleted) {
             //Show message indicating that the selected rule was deleted
-            Alert alertMessage = new Alert(AlertType.INFORMATION);
-            alertMessage.setHeaderText(null);
-            alertMessage.setContentText("Selected event was successfully deleted");
-            alertMessage.showAndWait();
+            showMessage(AlertType.INFORMATION, "Selected event was successfully deleted");
 
             // Update view
             mainController.repaintView();
@@ -395,12 +349,14 @@ public class EditEventController implements Initializable {
             stage.close();
         } else {
             //Show message indicating that the rule could not be deleted
-            Alert alertMessage = new Alert(AlertType.ERROR);
-            alertMessage.setHeaderText(null);
-            alertMessage.setContentText("Deleting Event Failed!");
-            alertMessage.showAndWait();
+            showMessage(AlertType.ERROR, "Deleting Event Failed!");
         }
-
     }
 
-}// end of EditEventController class
+    private void showMessage(AlertType type, String error) {
+        Alert alertMessage = new Alert(type);
+        alertMessage.setHeaderText(null);
+        alertMessage.setContentText(error);
+        alertMessage.showAndWait();
+    }
+}

@@ -15,14 +15,11 @@ public class MyCalendar {
     }
 
     // for adding/editing events
-    public LocalDate event_startDate;
-    public LocalDate event_endDate;
-    public LocalTime event_startTime;
-    public LocalTime event_endTime;
     public int event_day;
     public int event_month;
     public int event_year;
     public String event_subject;
+    public int event_categorie;
     public int event_categorie_id;
     public String event_comment;
 
@@ -32,6 +29,7 @@ public class MyCalendar {
     public int viewing_month;
     public int viewing_year;
     public  int viewing_day_of_month;
+    public int viewing_day_of_year;
 
 
     // for the current calendar being worked on
