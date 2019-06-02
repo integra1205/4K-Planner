@@ -6,6 +6,7 @@ import calendar.ui.addcalendar.AddCalendarController;
 import calendar.ui.addevent.AddEventController;
 import calendar.ui.editevent.EditEventController;
 import calendar.ui.listcalendars.ListCalendarsController;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXDatePicker;
@@ -31,6 +32,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,9 +44,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.IsoFields;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -93,11 +93,41 @@ public class FXMLDocumentController implements Initializable {
     private ScrollPane scrollPaneWeek;
 
     @FXML
+    private JFXButton buttonPrevWeek;
+
+    @FXML
+    private JFXButton buttonNextWeek;
+
+    @FXML
     private HBox weekdayHeaderForWeek;
 
     @FXML
     private GridPane weekView;
 
+    @FXML
+    private HBox weekdayHeaderForWeek1;
+
+    @FXML
+    private GridPane weekView1;
+
+
+    @FXML
+    private JFXButton buttonPrevMonth;
+
+    @FXML
+    private JFXButton buttonNextMonth;
+
+    @FXML
+    private JFXButton buttonPrevYear;
+
+    @FXML
+    private JFXButton buttonNextYear;
+
+    @FXML
+    private JFXButton buttonPrevDay;
+
+    @FXML
+    private JFXButton buttonNextDay;
 
     @FXML
     private GridPane monthView;
@@ -308,21 +338,55 @@ public class FXMLDocumentController implements Initializable {
 
     private void initializeDateSelector() {
 
+        //      Our format for DataPicker
+
+        selectedDate.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "dd-MM-YYYY";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                selectedDate.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+
+
         // Add event listener to each month list item, allowing user to change date
         selectedDate.valueProperty().addListener((observable, oldValue, newValue) -> {
+
 
                     // Necessary to check for null because change listener will
                     // also detect clear() calls
                     if (newValue != null) {
 
                         // Update the VIEWING MONTH
-                        MyCalendar.getInstance().viewing_month = MyCalendar.getInstance().getMonthIndex(newValue.getMonth().toString());
+                        MyCalendar.getInstance().viewing_month = newValue.getMonthValue();
+
                         MyCalendar.getInstance().viewing_year = newValue.getYear();
                         MyCalendar.getInstance().viewing_day = newValue.getDayOfYear();
                         MyCalendar.getInstance().viewing_week = newValue.getDayOfWeek().getValue();
                         MyCalendar.getInstance().viewing_day_of_month = newValue.getDayOfMonth();
                         // Update view
                         repaintView();
+
+
 
                     }
                 }
@@ -357,16 +421,21 @@ public class FXMLDocumentController implements Initializable {
 
         // Get the current VIEW
         int year = MyCalendar.getInstance().viewing_year;
-        int month = MyCalendar.getInstance().viewing_month+1;
+        int month = MyCalendar.getInstance().viewing_month;
 
         monthLbl.setText(MyCalendar.getInstance().getMonth(month) + "  " + Integer.toString(year));
 
         // Note: Java's Gregorian Calendar class gives us the right
         // "first day of the month" for a given calendar & month
         // This accounts for Leap Year
-        GregorianCalendar gc = new GregorianCalendar(year, month, 1);
-        int firstDay = gc.get(java.util.Calendar.DAY_OF_WEEK);
-        int daysInMonth = gc.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
+
+//        GregorianCalendar gc = new GregorianCalendar(year, month, 1);
+//        int firstDay = gc.get(java.util.Calendar.DAY_OF_WEEK);
+//        int daysInMonth = gc.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
+
+        LocalDate gc= LocalDate.of(MyCalendar.getInstance().viewing_year, MyCalendar.getInstance().viewing_month, 1);
+        int daysInMonth=gc.lengthOfMonth();
+        int firstDay=gc.getDayOfWeek().getValue();
 
         // We are "offsetting" our start depending on what the
         // first day of the month is.
@@ -414,7 +483,7 @@ public class FXMLDocumentController implements Initializable {
 
         // Get the current VIEW
         int year = MyCalendar.getInstance().viewing_year;
-        int month = MyCalendar.getInstance().viewing_month + 1;
+        int month = MyCalendar.getInstance().viewing_month;
         LocalDate[] allDaysOfSelectedWeek = MyCalendar.getInstance().getAllDaysOfSelectedWeek();
         int dayCount = 0;
 
@@ -422,6 +491,20 @@ public class FXMLDocumentController implements Initializable {
 
         // Go through calendar grid
         for (Node node : weekView.getChildren()) {
+
+            VBox dayOfWeek = (VBox) node;
+            dayOfWeek.getChildren().clear();
+            dayOfWeek.setStyle("-fx-backgroud-color: white");
+            dayOfWeek.setStyle("-fx-font: 14px \"System\" ");
+
+            Label lbl = new Label(Integer.toString(allDaysOfSelectedWeek[dayCount].getDayOfMonth()));
+            lbl.setPadding(new Insets(5));
+            lbl.setStyle("-fx-text-fill:darkslategray");
+            dayOfWeek.getChildren().add(lbl);
+            dayCount++;
+        }
+
+        for (Node node : weekView1.getChildren()) {
 
             VBox dayOfWeek = (VBox) node;
             dayOfWeek.getChildren().clear();
@@ -444,9 +527,11 @@ public class FXMLDocumentController implements Initializable {
 
         // Load year and month selection
         MyCalendar.getInstance().viewing_year = selectedDate.getValue().getYear();
+        MyCalendar.getInstance().viewing_month = selectedDate.getValue().getMonthValue();
+        MyCalendar.getInstance().viewing_day = selectedDate.getValue().getDayOfYear();
+        MyCalendar.getInstance().viewing_week = selectedDate.getValue().getDayOfWeek().getValue();
+        MyCalendar.getInstance().viewing_day_of_month = selectedDate.getValue().getDayOfMonth();
 
-        MyCalendar.getInstance().viewing_month =
-                MyCalendar.getInstance().getMonthIndex(selectedDate.getValue().getMonth().toString());
         // Update view
         repaintView();
     }
@@ -478,8 +563,8 @@ public class FXMLDocumentController implements Initializable {
         // Get viewing calendar
 
         String calendarName = MyCalendar.getInstance().calendar_name;
-        String currentMonth = MyCalendar.getInstance().getMonth(MyCalendar.getInstance().viewing_month + 1);
-        int currentMonthIndex = MyCalendar.getInstance().viewing_month + 1;
+        String currentMonth = MyCalendar.getInstance().getMonth(MyCalendar.getInstance().viewing_month);
+        int currentMonthIndex = MyCalendar.getInstance().viewing_month;
         int currentYear = MyCalendar.getInstance().viewing_year;
         LocalDate[] currentWeek = MyCalendar.getInstance().getAllDaysOfSelectedWeek();
 
@@ -503,8 +588,8 @@ public class FXMLDocumentController implements Initializable {
                 // Check for year we have selected
                 if (currentYear == startDate.toLocalDate().getYear()) {
                     if  (startDate.toLocalDate().isEqual(currentWeek[0]) ||
-                         startDate.toLocalDate().isEqual(currentWeek[6]) ||
-                        (startDate.toLocalDate().isAfter(currentWeek[0]) && startDate.toLocalDate().isBefore(currentWeek[6])) ||
+                         startDate.toLocalDate().isEqual(currentWeek[4]) ||
+                        (startDate.toLocalDate().isAfter(currentWeek[0]) && startDate.toLocalDate().isBefore(currentWeek[4])) ||
                         (startDate.toLocalDate().isBefore(currentWeek[0]) && endDate.toLocalDate().isAfter(currentWeek[0])) ||
                          endDate.toLocalDate().isEqual(currentWeek[0])) {
 
@@ -513,7 +598,21 @@ public class FXMLDocumentController implements Initializable {
                         int finishDay = endDate.toLocalDate().getDayOfMonth();
 
                         // Display decription of the event given it's day
-                        showDateWeek(startDay, eventDescript, eventCategorieID);
+
+                        showDateWeek(startDay, eventDescript, eventCategorieID, weekView);
+
+                    } else if (startDate.toLocalDate().isEqual(currentWeek[5]) ||
+                            startDate.toLocalDate().isEqual(currentWeek[6]) ||
+                            (startDate.toLocalDate().isBefore(currentWeek[5]) && endDate.toLocalDate().isAfter(currentWeek[5])) ||
+                            endDate.toLocalDate().isEqual(currentWeek[5])) {
+
+                        // Get day for the month
+                        int startDay = startDate.toLocalDate().getDayOfMonth();
+                        int finishDay = endDate.toLocalDate().getDayOfMonth();
+
+                        // Display decription of the event given it's day
+
+                        showDateWeek(startDay, eventDescript, eventCategorieID, weekView1);
                     }
                 }
             }
@@ -522,13 +621,14 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    public void showDateWeek(int dayNumber, String descript, int categorieID) {
+    //WEEK
+    public void showDateWeek(int dayNumber, String descript, int categorieID, GridPane view) {
 
         Image img = new Image(getClass().getClassLoader().getResourceAsStream("calendar/ui/icons/icon2.png"));
         ImageView imgView = new ImageView();
         imgView.setImage(img);
 
-        for (Node node : weekView.getChildren()) {
+        for (Node node : view.getChildren()) {
 
             // Get the current day
             VBox day = (VBox) node;
@@ -590,6 +690,8 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
         }
+
+
     }
 
 
@@ -601,10 +703,10 @@ public class FXMLDocumentController implements Initializable {
 
         // Get viewing calendar
         String calendarName = MyCalendar.getInstance().calendar_name;
-        String currentMonth = selectedDate.getValue().getMonth().toString();
+        String currentMonth = MyCalendar.getInstance().getMonth(MyCalendar.getInstance().viewing_month);
 
-        int currentMonthIndex = MyCalendar.getInstance().getMonthIndex(currentMonth) + 1;
-        int currentYear = selectedDate.getValue().getYear();
+        int currentMonthIndex = MyCalendar.getInstance().viewing_month;
+        int currentYear = MyCalendar.getInstance().viewing_year;
 
         // Query to get ALL Events from the selected calendar!!
         String getMonthEventsQuery = "SELECT * From EVENTS WHERE CalendarName='" + calendarName + "'";
@@ -956,7 +1058,7 @@ public class FXMLDocumentController implements Initializable {
         int weekdays = 7;
 
         // Weekday names
-        String[] weekAbbr = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        String[] weekAbbr = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
         for (int i = 0; i < weekdays; i++) {
 
@@ -996,24 +1098,25 @@ public class FXMLDocumentController implements Initializable {
             HBox.setHgrow(pane, Priority.ALWAYS);
             pane.setMaxWidth(Double.MAX_VALUE);
 
-            // Note: After adding a label to this, it tries to resize itself..
-            // So I'm setting a minimum width.
-            pane.setMinWidth(weekdayHeaderForWeek.getPrefWidth() / 7);
+            if ( i < 5) {
+                pane.setMinWidth(weekdayHeaderForWeek.getPrefWidth() / 5);
+                weekdayHeaderForWeek.getChildren().add(pane);
+                pane.getChildren().add(new Label(weekAbbr[i]));
 
-            // Add it to the header
-            weekdayHeaderForWeek.getChildren().add(pane);
-
-            // Add weekday name
-            pane.getChildren().add(new Label(weekAbbr[i]));
+            } else{
+                pane.setMinWidth(weekdayHeaderForWeek1.getPrefWidth() / 2);
+                weekdayHeaderForWeek1.getChildren().add(pane);
+                pane.getChildren().add(new Label(weekAbbr[i]));
+            }
         }
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         // Make empty calendar in every view
         initializeDateSelector();
+        initilizeButtonPrevNext();
 
         initDateClock();
 
@@ -1069,23 +1172,30 @@ public class FXMLDocumentController implements Initializable {
     private void initializeWeekView() {
         //TODO: initialize week view
 
-        // Go through each calendar grid location, or each "day" (7)
-        int cols = 7;
-        for (int i = 0; i < cols; i++) {
+        // Go through each calendar grid location, or each "day" (5+2=7)
+        for (int i = 0; i < 7; i++) {
 
-            // Add VBox and style it
-            VBox vPane = new VBox();
-            vPane.getStyleClass().add("calendar_pane");
-            vPane.setMinWidth(weekdayHeaderForWeek.getPrefWidth() / cols);
+            if (i<5) {
+                VBox vPane = new VBox();
+                vPane.getStyleClass().add("calendar_pane");
+                vPane.setMinWidth(weekdayHeaderForWeek.getPrefWidth() / 5);
 
-            vPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-                addEvent(vPane);
-            });
+                vPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+                    addEvent(vPane);
+                });
+                GridPane.setVgrow(vPane, Priority.ALWAYS);
+                weekView.add(vPane, i, 0);
+            } else{
+                VBox vPane = new VBox();
+                vPane.getStyleClass().add("calendar_pane");
+                vPane.setMinWidth(weekdayHeaderForWeek1.getPrefWidth() / 2);
 
-            GridPane.setVgrow(vPane, Priority.ALWAYS);
-
-            // Add it to the grid
-            weekView.add(vPane, i, 0);
+                vPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+                    addEvent(vPane);
+                });
+                GridPane.setVgrow(vPane, Priority.ALWAYS);
+                weekView1.add(vPane, i, 0);
+            }
         }
     }
 
@@ -1380,7 +1490,7 @@ public class FXMLDocumentController implements Initializable {
 
         //String currentMonth = monthLbl.getText();
         //System.out.println("currentMonth is: " + currentMonth);
-        //int currentMonthIndex = MyCalendar.getInstance().getMonthIndex(currentMonth) + 1;
+        //int currentMonthIndex = MyCalendar.getInstance().getMonthIndex(currentMonth) ;
         //System.out.println("currentMonthIndex is: " + currentMonthIndex);
 
         //int currentYear = Integer.parseInt(yearLbl.getText());
@@ -1478,5 +1588,60 @@ public class FXMLDocumentController implements Initializable {
             alertMessage.showAndWait();
         }
     }
+
+    //WEEK
+    public void initilizeButtonPrevNext(){
+
+        buttonPrevWeek.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+            LocalDate newValue = selectedDate.getValue().minusWeeks(1);
+            selectedDate.setValue(newValue);
+        });
+
+        buttonNextWeek.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+            LocalDate newValue = selectedDate.getValue().plusWeeks(1);
+            selectedDate.setValue(newValue);
+        });
+
+        buttonPrevMonth.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+            LocalDate newValue = selectedDate.getValue().minusMonths(1);
+            selectedDate.setValue(newValue);
+        });
+
+        buttonNextMonth.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+            LocalDate newValue = selectedDate.getValue().plusMonths(1);
+            selectedDate.setValue(newValue);
+        });
+
+        buttonPrevYear.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+            LocalDate newValue = selectedDate.getValue().minusYears(1);
+            selectedDate.setValue(newValue);
+        });
+
+        buttonNextYear.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+            LocalDate newValue = selectedDate.getValue().plusYears(1);
+            selectedDate.setValue(newValue);
+        });
+
+        buttonPrevDay.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+            LocalDate newValue = selectedDate.getValue().minusDays(1);
+            selectedDate.setValue(newValue);
+        });
+
+        buttonNextDay.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+            LocalDate newValue = selectedDate.getValue().plusDays(1);
+            selectedDate.setValue(newValue);
+        });
+
+
+    }
+
 
 }
