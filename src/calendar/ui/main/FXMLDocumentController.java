@@ -1219,7 +1219,7 @@ public class FXMLDocumentController implements Initializable {
                 vPane.setMinWidth(weekdayHeaderForYear.getPrefWidth() / 3);
 
                 ImageView imView = new ImageView(new Image("calendar/ui/icons/icon_" + i + j + ".png"));
-                imView.setFitHeight(140);
+                imView.setFitHeight(120);
                 imView.setFitWidth(200);
                 vPane.getChildren().add(imView);
                 vPane.setAlignment(Pos.CENTER);
