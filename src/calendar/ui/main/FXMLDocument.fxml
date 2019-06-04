@@ -237,7 +237,7 @@
                                                       </HBox>
                                                       <ScrollPane fx:id="scrollPaneMonth" prefHeight="540.0" prefWidth="800.0">
                                                          <content>
-                                                            <VBox prefHeight="800.0" prefWidth="786.0">
+                                                            <VBox prefHeight="540.0" prefWidth="786.0">
                                                                <children>
                                                                   <HBox fx:id="weekdayHeader" prefHeight="50.0" prefWidth="786.0" />
                                                                   <GridPane fx:id="monthView" prefHeight="480.0" prefWidth="785.0">
