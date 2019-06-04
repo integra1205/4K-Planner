@@ -16,8 +16,8 @@ public class MyEvent {
     private final LocalDate endDate;
     private final LocalTime endTime;
     private final SimpleStringProperty comment;
-    public static int amount;
 
+    private MyCategorie eventCategorie;
 
     public MyEvent(String subject, int categorie, String calendar, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         this.subject = new SimpleStringProperty(subject);
@@ -52,39 +52,32 @@ public class MyEvent {
         this.comment = event.comment;
     }
 
-    // Note: We need these accessors.
 
     public String getSubject() {
         return subject.get();
     }
-
     public Integer getCategorie() {
         return categorie.get();
     }
-
     public String getCalendar() {
         return calendar.get();
     }
-
-    public LocalDate getStartDate() {        return startDate;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
     public LocalTime getStartTime() {
         return startTime;
     }
-
     public LocalDate getEndDate() {
         return endDate;
     }
-
     public LocalTime getEndTime() {
         return endTime;
     }
-
     public String getComment() {
         return comment.get();
     }
-
     public SimpleStringProperty commentProperty() {
         return comment;
     }

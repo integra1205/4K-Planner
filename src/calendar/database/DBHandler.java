@@ -2,6 +2,7 @@ package calendar.database;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -96,8 +97,7 @@ public class DBHandler {
             } else {
                 String query1 = "CREATE TABLE " + TableName + "("
                         + "CalendarName varchar(45) primary key not null,\n"
-                        + "StartDate date, \n"
-                        + "UpdateDate date"
+                        + "StartDate date"
                         + ")";
                 stmt.execute(query1);
             }
@@ -241,7 +241,7 @@ public class DBHandler {
 
                 boolean dataExistsInTable = checkIfTableIsEmpty(TableName);
                 if (!dataExistsInTable) {
-                    String query2 = "INSERT INTO " + TableName + " VALUES('TestCalendar', '2019-05-05', '2019-05-18')";
+                    String query2 = "INSERT INTO " + TableName + " VALUES('TestCalendar', '2019-05-05')";
                     stmt.execute(query2);
                     System.out.println("Default values SUCCESSFULLY inserted Table " + TableName + "!!!");
                 } else {
@@ -491,7 +491,7 @@ public class DBHandler {
                         String filteredEvent = rs.getInt("EventID") + "~"
                                 + rs.getString("EventDescription") + "~"
                                 + rs.getInt("CategorieID") + "~"
-                                + rs.getString("CalendarName")+ "~"
+                                + rs.getString("CalendarName") + "~"
                                 + rs.getString("EventStartDate") + "~"
                                 + rs.getString("EventStartTime") + "~"
                                 + rs.getString("EventEndDate") + "~"

@@ -18,582 +18,570 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.RadialGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../style/mainStyle.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calendar.ui.main.FXMLDocumentController">
-    <children>
-        <BorderPane layoutX="350.0" prefHeight="680.0" prefWidth="1200.0" style="-fx-background-color: ecedf7;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <center>
-                <AnchorPane BorderPane.alignment="CENTER">
-                    <children>
-                        <VBox prefHeight="800.0" prefWidth="800.0">
-                            <children>
-                                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                    <children>
-                                        <VBox prefHeight="148.0" prefWidth="800.0">
-                                            <children>
-                                                <Label fx:id="thisTime" prefHeight="10.0" prefWidth="300.0">
-                                                    <VBox.margin>
-                                                        <Insets top="15.0" />
-                                                    </VBox.margin>
-                                                    <font>
-                                                        <Font size="24.0" />
-                                                    </font>
-                                                </Label>
-                                                <Label fx:id="thisDate" prefHeight="20.0" prefWidth="300.0">
-                                                    <VBox.margin>
-                                                        <Insets />
-                                                    </VBox.margin>
-                                                </Label>
-                                            </children>
-                                        </VBox>
-                                        <JFXTabPane prefHeight="800.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
-                                            <tabs>
-                                                <Tab fx:id="dayPan" text="Day's view">
-                                                    <content>
-                                                        <VBox fx:id="vBoxWeek">
-                                                            <children>
-                                                                <HBox prefHeight="50.0" prefWidth="800.0">
-                                                                    <children>
-                                                                        <Label fx:id="dayLbl" prefHeight="49.0" prefWidth="766.0">
-                                                                            <HBox.margin>
-                                                                                <Insets left="5.0" />
-                                                                            </HBox.margin>
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                        <JFXButton fx:id="buttonPrevDay" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
-                                                                            <graphic>
-                                                                                <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
-                                                                                    <image>
-                                                                                        <Image url="@../icons/arrow_prev.png" />
-                                                                                    </image>
-                                                                                </ImageView>
-                                                                            </graphic>
-                                                                            <HBox.margin>
-                                                                                <Insets bottom="10.0" left="10.0" top="10.0" />
-                                                                            </HBox.margin>
-                                                                        </JFXButton>
-                                                                        <JFXButton fx:id="buttonNextDay" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
-                                                                            <graphic>
-                                                                                <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
-                                                                                    <image>
-                                                                                        <Image url="@../icons/arrow_next.png" />
-                                                                                    </image>
-                                                                                </ImageView>
-                                                                            </graphic>
-                                                                            <HBox.margin>
-                                                                                <Insets bottom="10.0" right="10.0" top="10.0" />
-                                                                            </HBox.margin>
-                                                                        </JFXButton>
-                                                                    </children>
-                                                                </HBox>
-                                                                <ScrollPane fx:id="scrollPaneWeek" prefHeight="644.0" prefWidth="800.0">
-                                                                    <content>
-                                                                        <VBox alignment="CENTER" prefHeight="623.0" prefWidth="800.0">
-                                                                            <children>
-                                                                                <HBox fx:id="dayHeaderForDay" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="800.0">
-                                                                                    <children>
-                                                                                        <Label fx:id="headersLbl" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="258.0" text="Day of Week" textAlignment="CENTER" />
-                                                                                    </children></HBox>
-                                                                                <GridPane fx:id="dayView" prefHeight="626.0" prefWidth="800.0">
-                                                                                    <columnConstraints>
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="900.0" minWidth="10.0" prefWidth="677.0" />
-                                                                                    </columnConstraints>
-                                                                                    <rowConstraints>
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                    </rowConstraints>
-                                                                                </GridPane>
-                                                                            </children>
-                                                                        </VBox>
-                                                                    </content>
-                                                                </ScrollPane>
-                                                            </children>
-                                                        </VBox>
-                                                    </content>
-                                                </Tab>
-                                                <Tab fx:id="weekPan" text="Week's view">
-                                                    <content>
-                                                        <VBox fx:id="vBoxWeek">
-                                                            <children>
-                                                                <HBox fx:id="weekInfo" prefHeight="50.0" prefWidth="800.0">
-                                                                    <children>
-                                                                        <Label fx:id="weekLbl" prefHeight="49.0" prefWidth="766.0">
-                                                                            <HBox.margin>
-                                                                                <Insets left="5.0" />
-                                                                            </HBox.margin>
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                        <JFXButton fx:id="buttonPrevWeek" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
-                                                                            <graphic>
-                                                                                <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
-                                                                                    <image>
-                                                                                        <Image url="@../icons/arrow_prev.png" />
-                                                                                    </image>
-                                                                                </ImageView>
-                                                                            </graphic>
-                                                                            <HBox.margin>
-                                                                                <Insets bottom="10.0" left="10.0" top="10.0" />
-                                                                            </HBox.margin>
-                                                                        </JFXButton>
-                                                                        <JFXButton fx:id="buttonNextWeek" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
-                                                                            <graphic>
-                                                                                <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
-                                                                                    <image>
-                                                                                        <Image url="@../icons/arrow_next.png" />
-                                                                                    </image>
-                                                                                </ImageView>
-                                                                            </graphic>
-                                                                            <HBox.margin>
-                                                                                <Insets bottom="10.0" right="10.0" top="10.0" />
-                                                                            </HBox.margin>
-                                                                        </JFXButton>
-                                                                    </children>
-                                                                </HBox>
-                                                                <ScrollPane fx:id="scrollPaneWeek" prefHeight="644.0" prefWidth="800.0">
-                                                                    <content>
-                                                                        <VBox alignment="CENTER" prefHeight="623.0" prefWidth="800.0">
-                                                                            <children>
-                                                                                <HBox fx:id="weekdayHeaderForWeek" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="800.0" />
-                                                                                <GridPane fx:id="weekView" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="800.0">
-                                                                                    <columnConstraints>
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
-                                                                                    </columnConstraints>
-                                                                                    <rowConstraints>
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                    </rowConstraints>
-                                                                                </GridPane>
-                                                                                <HBox fx:id="weekdayHeaderForWeek1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="800.0" />
-                                                                                <GridPane fx:id="weekView1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="193.0" prefWidth="800.0">
-                                                                                    <columnConstraints>
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
-                                                                                    </columnConstraints>
-                                                                                    <rowConstraints>
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                    </rowConstraints>
-                                                                                </GridPane>
-                                                                            </children>
-                                                                        </VBox>
-                                                                    </content>
-                                                                </ScrollPane>
-                                                            </children>
-                                                        </VBox>
-                                                    </content>
-                                                </Tab>
-                                                <Tab fx:id="monthPan" text="Month's view">
-                                                    <content>
-                                                        <VBox fx:id="vBoxMonth">
-                                                            <children>
-                                                                <VBox fx:id="vBoxMonth" prefHeight="800.0">
-                                                                    <children>
-                                                                        <HBox fx:id="monthInfo" prefHeight="50.0" prefWidth="800.0">
-                                                                            <children>
-                                                                                <Label fx:id="monthLbl" prefHeight="49.0" prefWidth="766.0">
-                                                                                    <HBox.margin>
-                                                                                        <Insets left="5.0" />
-                                                                                    </HBox.margin>
-                                                                                    <font>
-                                                                                        <Font size="14.0" />
-                                                                                    </font>
-                                                                                </Label>
-                                                                                <JFXButton fx:id="buttonPrevMonth" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
-                                                                                    <graphic>
-                                                                                        <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
-                                                                                            <image>
-                                                                                                <Image url="@../icons/arrow_prev.png" />
-                                                                                            </image>
-                                                                                        </ImageView>
-                                                                                    </graphic>
-                                                                                    <HBox.margin>
-                                                                                        <Insets bottom="10.0" left="10.0" top="10.0" />
-                                                                                    </HBox.margin>
-                                                                                </JFXButton>
-                                                                                <JFXButton fx:id="buttonNextMonth" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
-                                                                                    <graphic>
-                                                                                        <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
-                                                                                            <image>
-                                                                                                <Image url="@../icons/arrow_next.png" />
-                                                                                            </image>
-                                                                                        </ImageView>
-                                                                                    </graphic>
-                                                                                    <HBox.margin>
-                                                                                        <Insets bottom="10.0" right="10.0" top="10.0" />
-                                                                                    </HBox.margin>
-                                                                                </JFXButton>
-                                                                            </children>
-                                                                        </HBox>
-                                                                        <ScrollPane fx:id="scrollPaneMonth" prefHeight="644.0" prefWidth="800.0">
-                                                                            <content>
-                                                                                <VBox prefHeight="800.0" prefWidth="786.0">
-                                                                                    <children>
-                                                                                        <HBox fx:id="weekdayHeader" prefHeight="60.0" prefWidth="786.0" />
-                                                                                        <GridPane fx:id="monthView" prefHeight="700.0" prefWidth="785.0">
-                                                                                            <columnConstraints>
-                                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                            </columnConstraints>
-                                                                                            <rowConstraints>
-                                                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                            </rowConstraints>
-                                                                                        </GridPane>
-                                                                                    </children>
-                                                                                </VBox>
-                                                                            </content>
-                                                                        </ScrollPane>
-                                                                    </children>
-                                                                </VBox>
-                                                            </children>
-                                                        </VBox>
-                                                    </content></Tab>
-                                                <Tab fx:id="yearPan" text="Year's view">
-                                                    <content>
-                                                        <VBox>
-                                                            <children>
-                                                                <HBox fx:id="yearInfo" prefHeight="50.0" prefWidth="800.0">
-                                                                    <children>
-                                                                        <Label fx:id="yearLbl" prefHeight="42.0" prefWidth="682.0">
-                                                                            <HBox.margin>
-                                                                                <Insets left="30.0" />
-                                                                            </HBox.margin>
-                                                                            <font>
-                                                                                <Font size="14.0" />
-                                                                            </font>
-                                                                        </Label>
-                                                                        <JFXButton fx:id="buttonPrevYear" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
-                                                                            <graphic>
-                                                                                <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
-                                                                                    <image>
-                                                                                        <Image url="@../icons/arrow_prev.png" />
-                                                                                    </image>
-                                                                                </ImageView>
-                                                                            </graphic>
-                                                                            <HBox.margin>
-                                                                                <Insets bottom="10.0" left="10.0" top="10.0" />
-                                                                            </HBox.margin>
-                                                                        </JFXButton>
-                                                                        <JFXButton fx:id="buttonNextYear" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
-                                                                            <graphic>
-                                                                                <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
-                                                                                    <image>
-                                                                                        <Image url="@../icons/arrow_next.png" />
-                                                                                    </image>
-                                                                                </ImageView>
-                                                                            </graphic>
-                                                                            <HBox.margin>
-                                                                                <Insets bottom="10.0" right="10.0" top="10.0" />
-                                                                            </HBox.margin>
-                                                                        </JFXButton>
-                                                                    </children>
-                                                                </HBox>
-                                                                <ScrollPane fx:id="scrollPaneYear" prefHeight="658.0" prefWidth="818.0">
-                                                                    <content>
-                                                                        <VBox>
-                                                                            <children>
-                                                                                <HBox fx:id="weekdayHeaderForYear" prefHeight="50.0" prefWidth="800.0" />
-                                                                                <GridPane fx:id="yearView" prefHeight="471.0" prefWidth="800.0">
-                                                                                    <columnConstraints>
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                    </columnConstraints>
-                                                                                    <rowConstraints>
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                                    </rowConstraints>
-                                                                                </GridPane>
-                                                                            </children>
-                                                                        </VBox>
-                                                                    </content>
-                                                                </ScrollPane>
-                                                            </children>
-                                                        </VBox>
-                                                    </content></Tab>
-                                            </tabs>
-                                        </JFXTabPane>
-                                    </children>
-                                </VBox>
-                            </children>
+   <children>
+      <BorderPane layoutX="350.0" prefHeight="680.0" prefWidth="1200.0" style="-fx-background-color: ecedf7;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="800.0" prefWidth="800.0">
+                     <children>
+                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                           <children>
+                              <VBox prefHeight="148.0" prefWidth="800.0">
+                                 <children>
+                                    <Label fx:id="thisTime" prefHeight="10.0" prefWidth="300.0">
+                                       <VBox.margin>
+                                          <Insets top="15.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="thisDate" prefHeight="20.0" prefWidth="300.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <JFXTabPane fx:id="tabPane" prefHeight="800.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+                                 <tabs>
+                                    <Tab fx:id="dayPan" text="Day's view">
+                                       <content>
+                                          <VBox fx:id="vBoxWeek">
+                                             <children>
+                                                <HBox prefHeight="47.0" prefWidth="800.0">
+                                                   <children>
+                                                      <Label fx:id="dayLbl" prefHeight="47.0" prefWidth="766.0">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                         <font>
+                                                            <Font size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <JFXButton fx:id="buttonPrevDay" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
+                                                         <graphic>
+                                                            <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
+                                                               <image>
+                                                                  <Image url="@../icons/arrow_prev.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                         <HBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </JFXButton>
+                                                      <JFXButton fx:id="buttonNextDay" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
+                                                         <graphic>
+                                                            <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
+                                                               <image>
+                                                                  <Image url="@../icons/arrow_next.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                         <HBox.margin>
+                                                            <Insets bottom="10.0" right="10.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </JFXButton>
+                                                   </children>
+                                                </HBox>
+                                                <ScrollPane fx:id="scrollPaneWeek" prefHeight="644.0" prefWidth="800.0">
+                                                   <content>
+                                                      <VBox alignment="CENTER" prefHeight="623.0" prefWidth="800.0">
+                                                         <children>
+                                                            <HBox fx:id="dayHeaderForDay" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="800.0">
+                                                               <children>
+                                                                  <Label fx:id="headersDayLbl" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="258.0" text="Day of Week" textAlignment="CENTER" />
+                                                               </children></HBox>
+                                                            <GridPane fx:id="dayView" prefHeight="626.0" prefWidth="800.0">
+                                                              <columnConstraints>
+                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="900.0" minWidth="10.0" prefWidth="677.0" />
+                                                              </columnConstraints>
+                                                              <rowConstraints>
+                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                              </rowConstraints>
+                                                            </GridPane>
+                                                         </children>
+                                                      </VBox>
+                                                   </content>
+                                                </ScrollPane>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </Tab>
+                                    <Tab fx:id="weekPan" text="Week's view">
+                                       <content>
+                                          <VBox fx:id="vBoxWeek">
+                                             <children>
+                                                <HBox fx:id="weekInfo" prefHeight="50.0" prefWidth="800.0">
+                                                   <children>
+                                                      <Label fx:id="weekLbl" prefHeight="49.0" prefWidth="766.0">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                         <font>
+                                                            <Font size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <JFXButton fx:id="buttonPrevWeek" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
+                                                         <graphic>
+                                                            <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
+                                                               <image>
+                                                                  <Image url="@../icons/arrow_prev.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                         <HBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </JFXButton>
+                                                      <JFXButton fx:id="buttonNextWeek" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
+                                                         <graphic>
+                                                            <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
+                                                               <image>
+                                                                  <Image url="@../icons/arrow_next.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                         <HBox.margin>
+                                                            <Insets bottom="10.0" right="10.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </JFXButton>
+                                                   </children>
+                                                </HBox>
+                                                <ScrollPane fx:id="scrollPaneWeek" prefHeight="644.0" prefWidth="800.0">
+                                                   <content>
+                                                      <VBox alignment="CENTER" prefHeight="623.0" prefWidth="800.0">
+                                                         <children>
+                                                            <HBox fx:id="weekdayHeaderForWeek" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="800.0" />
+                                                            <GridPane fx:id="weekView" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="800.0">
+                                                               <columnConstraints>
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
+                                                               </columnConstraints>
+                                                               <rowConstraints>
+                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                               </rowConstraints>
+                                                            </GridPane>
+                                                            <HBox fx:id="weekdayHeaderForWeek1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="800.0" />
+                                                            <GridPane fx:id="weekView1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="193.0" prefWidth="800.0">
+                                                               <columnConstraints>
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
+                                                               </columnConstraints>
+                                                               <rowConstraints>
+                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                               </rowConstraints>
+                                                            </GridPane>
+                                                         </children>
+                                                      </VBox>
+                                                   </content>
+                                                </ScrollPane>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </Tab>
+                                    <Tab fx:id="monthPan" text="Month's view">
+                                       <content>
+                                          <VBox fx:id="vBoxMonth">
+                                             <children>
+                                                <VBox fx:id="vBoxMonth" prefHeight="800.0">
+                                                   <children>
+                                                      <HBox fx:id="monthInfo" prefHeight="50.0" prefWidth="800.0">
+                                                         <children>
+                                                            <Label fx:id="monthLbl" prefHeight="49.0" prefWidth="766.0">
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" />
+                                                               </HBox.margin>
+                                                               <font>
+                                                                  <Font size="16.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <JFXButton fx:id="buttonPrevMonth" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
+                                                               <graphic>
+                                                                  <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
+                                                                     <image>
+                                                                        <Image url="@../icons/arrow_prev.png" />
+                                                                     </image>
+                                                                  </ImageView>
+                                                               </graphic>
+                                                               <HBox.margin>
+                                                                  <Insets bottom="10.0" left="10.0" top="10.0" />
+                                                               </HBox.margin>
+                                                            </JFXButton>
+                                                            <JFXButton fx:id="buttonNextMonth" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
+                                                               <graphic>
+                                                                  <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
+                                                                     <image>
+                                                                        <Image url="@../icons/arrow_next.png" />
+                                                                     </image>
+                                                                  </ImageView>
+                                                               </graphic>
+                                                               <HBox.margin>
+                                                                  <Insets bottom="10.0" right="10.0" top="10.0" />
+                                                               </HBox.margin>
+                                                            </JFXButton>
+                                                         </children>
+                                                      </HBox>
+                                                      <ScrollPane fx:id="scrollPaneMonth" prefHeight="644.0" prefWidth="800.0">
+                                                         <content>
+                                                            <VBox prefHeight="800.0" prefWidth="786.0">
+                                                               <children>
+                                                                  <HBox fx:id="weekdayHeader" prefHeight="50.0" prefWidth="786.0" />
+                                                                  <GridPane fx:id="monthView" prefHeight="700.0" prefWidth="785.0">
+                                                                     <columnConstraints>
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                     </columnConstraints>
+                                                                     <rowConstraints>
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                     </rowConstraints>
+                                                                  </GridPane>
+                                                               </children>
+                                                            </VBox>
+                                                         </content>
+                                                      </ScrollPane>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </VBox>
+                                       </content></Tab>
+                                    <Tab fx:id="yearPan" text="Year's view">
+                                       <content>
+                                          <VBox>
+                                             <children>
+                                                <HBox fx:id="yearInfo" prefHeight="50.0" prefWidth="800.0">
+                                                   <children>
+                                                      <Label fx:id="yearLbl" prefHeight="48.0" prefWidth="709.0">
+                                                         <HBox.margin>
+                                                            <Insets />
+                                                         </HBox.margin>
+                                                         <font>
+                                                            <Font size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <JFXButton fx:id="buttonPrevYear" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
+                                                         <graphic>
+                                                            <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
+                                                               <image>
+                                                                  <Image url="@../icons/arrow_prev.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                         <HBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </JFXButton>
+                                                      <JFXButton fx:id="buttonNextYear" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text=" ">
+                                                         <graphic>
+                                                            <ImageView fitHeight="29.0" fitWidth="29.0" nodeOrientation="INHERIT" pickOnBounds="true" smooth="false">
+                                                               <image>
+                                                                  <Image url="@../icons/arrow_next.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                         <HBox.margin>
+                                                            <Insets bottom="10.0" right="10.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </JFXButton>
+                                                   </children>
+                                                </HBox>
+                                                <VBox>
+                                                   <children>
+                                                      <HBox fx:id="weekdayHeaderForYear" prefHeight="47.0" prefWidth="800.0">
+                                                         <children>
+                                                            <Label fx:id="headersYearLbl" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="258.0" text="This Year" textAlignment="CENTER" />
+                                                         </children>
+                                                      </HBox>
+                                                      <GridPane fx:id="yearView" prefHeight="573.0" prefWidth="800.0">
+                                                         <columnConstraints>
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                         </columnConstraints>
+                                                         <rowConstraints>
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                         </rowConstraints>
+                                                      </GridPane>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </VBox>
+                                       </content></Tab>
+                                 </tabs>
+                              </JFXTabPane>
+                           </children>
                         </VBox>
-                    </children>
-                </AnchorPane>
-            </center>
-            <right>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="278.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="278.0" stylesheets="@../style/menuStyle.css">
-                            <children>
-                                <HBox prefHeight="38.0" prefWidth="278.0">
-                                    <children>
-                                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="110.0" text="Calendar Title:" textAlignment="JUSTIFY">
-                                            <HBox.margin>
-                                                <Insets left="20.0" top="15.0" />
-                                            </HBox.margin></Label>
-                                        <Label fx:id="calendarNameLbl" alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="153.0">
-                                            <HBox.margin>
-                                                <Insets top="15.0" />
-                                            </HBox.margin>
-                                        </Label>
-                                    </children>
-                                </HBox>
-                                <Line endX="100.0" startX="-100.0" stroke="#c21e19" strokeWidth="4.0">
-                                    <fill>
-                                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                                            <stops>
-                                                <Stop color="BLACK" />
-                                                <Stop color="WHITE" offset="1.0" />
-                                            </stops>
-                                        </RadialGradient>
-                                    </fill>
-                                    <VBox.margin>
-                                        <Insets left="30.0" top="20.0" />
-                                    </VBox.margin></Line>
-                                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="278.0" text="Calendar Options:" textAlignment="CENTER">
-                                    <VBox.margin>
-                                        <Insets top="80.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <JFXButton id="menuButton" onMouseClicked="#newCalendar" prefHeight="37.0" prefWidth="235.0" text="Create New Calendar">
-                                    <font>
-                                        <Font size="12.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets left="20.0" right="20.0" top="10.0" />
-                                    </VBox.margin>
-                                </JFXButton>
-                                <JFXButton id="menuButton" layoutX="30.0" layoutY="30.0" onMouseClicked="#manageCalendars" prefHeight="37.0" prefWidth="235.0" text="Manage Your Calendars">
-                                    <font>
-                                        <Font size="12.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets left="20.0" right="20.0" top="20.0" />
-                                    </VBox.margin>
-                                </JFXButton>
-                                <Label alignment="CENTER" prefHeight="30.0" prefWidth="307.0" text="Export Options:">
-                                    <font>
-                                        <Font size="12.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets top="40.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <JFXButton id="menuButton" onMouseClicked="#pdfBtn" prefHeight="37.0" prefWidth="235.0" text="Export Calendar to PDF">
-                                    <font>
-                                        <Font size="12.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets left="20.0" right="20.0" top="10.0" />
-                                    </VBox.margin>
-                                </JFXButton>
-                                <Label alignment="CENTER" layoutX="10.0" layoutY="257.0" prefHeight="30.0" prefWidth="307.0" text="Other Options:">
-                                    <font>
-                                        <Font size="12.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets top="40.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <JFXButton id="menuButton" layoutX="30.0" layoutY="287.0" onMouseClicked="#deleteAllEvents" prefHeight="37.0" prefWidth="235.0" text="Delete All Events">
-                                    <font>
-                                        <Font size="12.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets left="20.0" right="20.0" top="10.0" />
-                                    </VBox.margin>
-                                </JFXButton>
-                            </children>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </center>
+         <right>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="278.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="278.0" stylesheets="@../style/menuStyle.css">
+                     <children>
+                        <HBox prefHeight="22.0" prefWidth="278.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="100.0" text="Calendar Title:" textAlignment="JUSTIFY">
+                                 <HBox.margin>
+                                    <Insets left="20.0" top="15.0" />
+                                 </HBox.margin></Label>
+                              <Label fx:id="calendarNameLbl" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="140.0">
+                                 <HBox.margin>
+                                    <Insets left="10.0" top="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="65.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="34.0" prefWidth="278.0" text="Calendar Options:" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets top="60.0" />
+                           </VBox.margin>
+                        </Label>
+                        <JFXButton id="menuButton" onMouseClicked="#newCalendar" prefHeight="37.0" prefWidth="235.0" text="Create New Calendar">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" top="10.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton id="menuButton" layoutX="30.0" layoutY="30.0" onMouseClicked="#manageCalendars" prefHeight="30.0" prefWidth="235.0" text="Manage Your Calendars">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="20.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="307.0" text="Export Options:">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="40.0" />
+                           </VBox.margin>
+                        </Label>
+                        <JFXButton id="menuButton" onMouseClicked="#pdfBtn" prefHeight="30.0" prefWidth="235.0" text="Export Calendar to PDF">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="10.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <Label alignment="CENTER" layoutX="10.0" layoutY="257.0" prefHeight="30.0" prefWidth="307.0" text="Other Options:">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="40.0" />
+                           </VBox.margin>
+                        </Label>
+                        <JFXButton id="menuButton" layoutX="30.0" layoutY="287.0" onMouseClicked="#deleteAllEvents" prefHeight="30.0" prefWidth="235.0" text="Delete All Events">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="10.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </right>
+         <left>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="291.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="800.0" prefWidth="321.0" stylesheets="@../style/menuStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <JFXDatePicker fx:id="selectedDate" defaultColor="#9a529b" prefHeight="35.0" prefWidth="193.0" styleClass="calendar_pane">
+                           <VBox.margin>
+                              <Insets left="50.0" top="75.0" />
+                           </VBox.margin>
+                        </JFXDatePicker>
+                        <Label alignment="CENTER" prefHeight="37.0" prefWidth="291.0" text="Calendar Categories:">
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin></Label>
+                        <VBox fx:id="colorRootPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="299.0" VBox.vgrow="NEVER">
+                           <children>
+                              <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="52.0" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
+                                 <children>
+                                    <Label text="Work">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXColorPicker fx:id="workCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="Pick Color" />
+                                    <JFXCheckBox fx:id="workBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                            <Insets right="30.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
+                                 <children>
+                                    <Label text="Study">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXColorPicker fx:id="studyCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="Pick Color" />
+                                    <JFXCheckBox fx:id="studyBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets right="30.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="73.0" prefHeight="43.0" prefWidth="320.0" spacing="20.0">
+                                 <children>
+                                    <Label text="Sport">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXColorPicker fx:id="sportCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="Pick Color" />
+                                    <JFXCheckBox fx:id="sportBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
+                                 </children>
+                                 <padding>
+                                    <Insets right="30.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
+                                 <children>
+                                    <Label text="Vacation">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXColorPicker fx:id="vacationCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="a" />
+                                    <JFXCheckBox fx:id="vacationBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets right="30.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="85.0" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
+                                 <children>
+                                    <Label text="Birthdays">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXColorPicker fx:id="birthdaysCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="a" />
+                                    <JFXCheckBox fx:id="birthdaysBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets right="30.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="128.0" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
+                                 <children>
+                                    <Label text="Holidays">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXColorPicker fx:id="holidaysCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="a" />
+                                    <JFXCheckBox fx:id="holidaysBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets right="30.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="171.0" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
+                                 <children>
+                                    <Label text="Other">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXColorPicker fx:id="otherCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="a" />
+                                    <JFXCheckBox fx:id="otherBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets right="30.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </VBox>
-                    </children>
-                </AnchorPane>
-            </right>
-            <left>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="291.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <VBox prefHeight="800.0" prefWidth="321.0" stylesheets="@../style/menuStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <children>
-                                <JFXDatePicker fx:id="selectedDate" defaultColor="#485387cc" prefHeight="40.0" prefWidth="193.0" styleClass="calendar_pane">
-                                    <VBox.margin>
-                                        <Insets left="50.0" top="35.0" />
-                                    </VBox.margin>
-                                </JFXDatePicker>
-                                <Label alignment="CENTER" prefHeight="36.0" prefWidth="291.0" text="Calendar Categories:">
-                                    <VBox.margin>
-                                        <Insets top="90.0" />
-                                    </VBox.margin></Label>
-                                <VBox fx:id="colorRootPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="299.0" VBox.vgrow="NEVER">
-                                    <children>
-                                        <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="52.0" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
-                                            <children>
-                                                <Label text="Work">
-                                                    <HBox.margin>
-                                                        <Insets right="5.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <JFXColorPicker fx:id="workCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="Pick Color" />
-                                                <JFXCheckBox fx:id="workBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
-                                            </children>
-                                            <VBox.margin>
-                                                <Insets top="10.0" />
-                                            </VBox.margin>
-                                            <padding>
-                                                <Insets right="30.0" />
-                                            </padding>
-                                        </HBox>
-                                        <HBox alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
-                                            <children>
-                                                <Label text="Study">
-                                                    <HBox.margin>
-                                                        <Insets right="5.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <JFXColorPicker fx:id="studyCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="Pick Color" />
-                                                <JFXCheckBox fx:id="studyBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
-                                            </children>
-                                            <VBox.margin>
-                                                <Insets top="10.0" />
-                                            </VBox.margin>
-                                            <padding>
-                                                <Insets right="30.0" />
-                                            </padding>
-                                        </HBox>
-                                        <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="73.0" prefHeight="43.0" prefWidth="320.0" spacing="20.0">
-                                            <children>
-                                                <Label text="Sport">
-                                                    <HBox.margin>
-                                                        <Insets right="5.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <JFXColorPicker fx:id="sportCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="Pick Color" />
-                                                <JFXCheckBox fx:id="sportBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
-                                            </children>
-                                            <padding>
-                                                <Insets right="30.0" />
-                                            </padding>
-                                            <VBox.margin>
-                                                <Insets top="10.0" />
-                                            </VBox.margin>
-                                        </HBox>
-                                        <HBox alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
-                                            <children>
-                                                <Label text="Vacation">
-                                                    <HBox.margin>
-                                                        <Insets right="5.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <JFXColorPicker fx:id="vacationCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="a" />
-                                                <JFXCheckBox fx:id="vacationBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
-                                            </children>
-                                            <VBox.margin>
-                                                <Insets top="10.0" />
-                                            </VBox.margin>
-                                            <padding>
-                                                <Insets right="30.0" />
-                                            </padding>
-                                        </HBox>
-                                        <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="85.0" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
-                                            <children>
-                                                <Label text="Birthdays">
-                                                    <HBox.margin>
-                                                        <Insets right="5.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <JFXColorPicker fx:id="birthdaysCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="a" />
-                                                <JFXCheckBox fx:id="birthdaysBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
-                                            </children>
-                                            <VBox.margin>
-                                                <Insets top="10.0" />
-                                            </VBox.margin>
-                                            <padding>
-                                                <Insets right="30.0" />
-                                            </padding>
-                                        </HBox>
-                                        <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="128.0" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
-                                            <children>
-                                                <Label text="Holidays">
-                                                    <HBox.margin>
-                                                        <Insets right="5.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <JFXColorPicker fx:id="holidaysCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="a" />
-                                                <JFXCheckBox fx:id="holidaysBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
-                                            </children>
-                                            <VBox.margin>
-                                                <Insets top="10.0" />
-                                            </VBox.margin>
-                                            <padding>
-                                                <Insets right="30.0" />
-                                            </padding>
-                                        </HBox>
-                                        <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="171.0" prefHeight="43.0" prefWidth="304.0" spacing="20.0">
-                                            <children>
-                                                <Label text="Other">
-                                                    <HBox.margin>
-                                                        <Insets right="5.0" />
-                                                    </HBox.margin>
-                                                </Label>
-                                                <JFXColorPicker fx:id="otherCP" accessibleRole="BUTTON" editable="true" prefHeight="24.0" prefWidth="50.0" promptText="a" />
-                                                <JFXCheckBox fx:id="otherBox" checkedColor="#777777" onAction="#handleCheckBoxAction" selected="true" text="show?" />
-                                            </children>
-                                            <VBox.margin>
-                                                <Insets top="10.0" />
-                                            </VBox.margin>
-                                            <padding>
-                                                <Insets right="30.0" />
-                                            </padding>
-                                        </HBox>
-                                    </children>
-                                    <VBox.margin>
-                                        <Insets />
-                                    </VBox.margin>
-                                </VBox>
-                                <JFXCheckBox fx:id="selectAllCheckBox" alignment="CENTER" checkedColor="#777777" contentDisplay="CENTER" onAction="#selectAllCheckBoxes" prefHeight="31.0" prefWidth="320.0" text="Select/Unselect all">
-                                    <font>
-                                        <Font size="13.0" />
-                                    </font>
-                                </JFXCheckBox>
-                                <HBox alignment="CENTER" prefHeight="42.0" prefWidth="304.0">
-                                    <children>
-                                        <JFXButton id="menuButton" onMouseClicked="#updateColors" prefHeight="39.0" prefWidth="180.0" text="Update Colors">
-                                            <HBox.margin>
-                                                <Insets top="20.0" />
-                                            </HBox.margin></JFXButton>
-                                    </children>
-                                    <VBox.margin>
-                                        <Insets top="15.0" />
-                                    </VBox.margin>
-                                </HBox>
-                            </children>
-                        </VBox>
-                    </children>
-                </AnchorPane>
-            </left>
-        </BorderPane>
-    </children>
+                        <JFXCheckBox fx:id="selectAllCheckBox" alignment="CENTER" checkedColor="#777777" contentDisplay="CENTER" onAction="#selectAllCheckBoxes" prefHeight="31.0" prefWidth="320.0" text="Select/Unselect all">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </JFXCheckBox>
+                        <HBox alignment="CENTER" prefHeight="42.0" prefWidth="304.0">
+                           <children>
+                              <JFXButton id="menuButton" onMouseClicked="#updateColors" prefHeight="30.0" prefWidth="235.0" text="Update Colors">
+                                 <HBox.margin>
+                                    <Insets top="20.0" />
+                                 </HBox.margin></JFXButton>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </left>
+      </BorderPane>
+   </children>
 </AnchorPane>
