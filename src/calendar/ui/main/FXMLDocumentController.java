@@ -575,7 +575,6 @@ public class FXMLDocumentController implements Initializable {
 
     //DAY
     private void populateDayWithEvents() {
-        //TODO DAYYY!!
 
         String calendarName = MyCalendar.getInstance().calendar_name;
         int currentMonthIndex = MyCalendar.getInstance().viewing_month;
@@ -608,7 +607,7 @@ public class FXMLDocumentController implements Initializable {
                         if (currentDay == startDate.toLocalDate().getDayOfMonth()) {
 
                             // Display decription of the event given it's day
-                            showDayDate(dayView, currentDay, eventDuration, eventTime, eventDescript, comment, eventCategorieID);
+                            showDayDate(dayView, eventTime, eventDescript, comment, eventCategorieID);
                         }
                     }
                 }
@@ -618,84 +617,93 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    public void showDayDate(GridPane view, int day, long eventDuration, String eventTime, String descript, String comment, int categorieID) {
+    public void showDayDate(GridPane view, String eventTime, String descript, String comment, int categorieID) {
 
         Image img = new Image(getClass().getClassLoader().getResourceAsStream("calendar/ui/icons/icon2.png"));
         ImageView imgView = new ImageView();
         imgView.setImage(img);
 
-        int thisYear = Integer.parseInt(dayLbl.getText().substring(0, 4));
-        int thisMonth = Integer.parseInt(dayLbl.getText().substring(5, 7));
-        //int thisDay = Integer.parseInt(dayLbl.getText().substring(8, 10));
 
-        if (selectedDate.getValue().equals(LocalDate.of(thisYear, thisMonth, day))) {
+        // Add an event label with the given description
+        Label eventLbl = new Label(eventTime + "\n" + descript + "\n" + comment);
+        eventLbl.setGraphic(imgView);
+        eventLbl.getStyleClass().add("event-label");
 
-            // Add an event label with the given description
-            Label eventLbl = new Label(eventTime + "\n" + descript + "\n" + comment);
-            eventLbl.setGraphic(imgView);
-            eventLbl.getStyleClass().add("event-label");
+        // Save the categorie ID in accessible text
+        eventLbl.setAccessibleText(Integer.toString(categorieID));
+        System.out.println(eventLbl.getAccessibleText());
 
-            // Save the categorie ID in accessible text
-            eventLbl.setAccessibleText(Integer.toString(categorieID));
-            System.out.println(eventLbl.getAccessibleText());
+        eventLbl.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            editEvent((VBox) eventLbl.getParent(), eventLbl.getText(), eventLbl.getAccessibleText());
 
-            eventLbl.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-                editEvent((HBox) eventLbl.getParent(), eventLbl.getText().substring(14), eventLbl.getAccessibleText());
+        });
 
-            });
+        // Get categorie color from categorie's table
+        String eventRGB = databaseHandler.getCategorieColor(categorieID);
 
-            // Get categorie color from categorie's table
-            String eventRGB = databaseHandler.getCategorieColor(categorieID);
+        // Parse for rgb values
+        String[] colors = eventRGB.split("-");
+        String red = colors[0];
+        String green = colors[1];
+        String blue = colors[2];
 
-            // Parse for rgb values
-            String[] colors = eventRGB.split("-");
-            String red = colors[0];
-            String green = colors[1];
-            String blue = colors[2];
+        System.out.println("Color; " + red + green + blue);
 
-            System.out.println("Color; " + red + green + blue);
+        eventLbl.setStyle("-fx-background-color: rgb(" + red +
+                ", " + green + ", " + blue + ", " + 1 + ");");
 
-            eventLbl.setStyle("-fx-background-color: rgb(" + red +
-                    ", " + green + ", " + blue + ", " + 1 + ");");
+        // Stretch to fill box
+        eventLbl.setMaxWidth(Double.MAX_VALUE);
 
-            // Stretch to fill box
-            eventLbl.setMaxWidth(Double.MAX_VALUE);
+        // Mouse effects
+        eventLbl.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
+            eventLbl.getScene().setCursor(Cursor.HAND);
+        });
 
-            // Mouse effects
-            eventLbl.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
-                eventLbl.getScene().setCursor(Cursor.HAND);
-            });
+        eventLbl.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> {
+            eventLbl.getScene().setCursor(Cursor.DEFAULT);
+        });
 
-            eventLbl.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> {
-                eventLbl.getScene().setCursor(Cursor.DEFAULT);
-            });
+        ArrayList<Integer> first = new ArrayList<>();
+        for (int i = 0; i < 4; i++) first.add(i);
+        ArrayList<Integer> second = new ArrayList<>();
+        for (int i = 4; i < 8; i++) second.add(i);
+        ArrayList<Integer> third = new ArrayList<>();
+        for (int i = 8; i < 12; i++) third.add(i);
+        ArrayList<Integer> four = new ArrayList<>();
+        for (int i = 12; i < 16; i++) four.add(i);
+        ArrayList<Integer> five = new ArrayList<>();
+        for (int i = 16; i < 20; i++) five.add(i);
+        ArrayList<Integer> six = new ArrayList<>();
+        for (int i = 20; i < 24; i++) six.add(i);
 
-            // Add label to calendar in right place
-            if (eventDuration < 14000) {
-                HBox box = (HBox) view.getChildren().get(0);
-                box.getChildren().add(eventLbl);
-            } else if (eventDuration < 28800) {
-                HBox box = (HBox) view.getChildren().get(1);
-                box.getChildren().add(eventLbl);
-
-            } else if (eventDuration < 43200) {
-                HBox box = (HBox) view.getChildren().get(2);
-                box.getChildren().add(eventLbl);
-
-            } else if (eventDuration < 57600) {
-                HBox box = (HBox) view.getChildren().get(3);
-                box.getChildren().add(eventLbl);
-
-            } else if (eventDuration < 72000) {
-                HBox box = (HBox) view.getChildren().get(4);
-                box.getChildren().add(eventLbl);
-
-            } else if ((eventDuration < 86400)) {
-                HBox box = (HBox) view.getChildren().get(5);
-                box.getChildren().add(eventLbl);
-            } else {
-                return;
-            }
+        HBox hcell;
+        int search = Integer.parseInt(eventTime.substring(0, 2));
+        // Did we find a match?
+        if (first.contains(search)) {
+            // Add label to calendar
+            hcell = (HBox) view.getChildren().get(0);
+            hcell.getChildren().add(eventLbl);
+        } else if (second.contains(search)) {
+            // Add label to calendar
+            hcell = (HBox) view.getChildren().get(1);
+            hcell.getChildren().add(eventLbl);
+        } else if (third.contains(search)) {
+            // Add label to calendar
+            hcell = (HBox) view.getChildren().get(2);
+            hcell.getChildren().add(eventLbl);
+        } else if (four.contains(search)) {
+            // Add label to calendar
+            hcell = (HBox) view.getChildren().get(1);
+            hcell.getChildren().add(eventLbl);
+        } else if (five.contains(search)) {
+            // Add label to calendar
+            hcell = (HBox) view.getChildren().get(2);
+            hcell.getChildren().add(eventLbl);
+        } else if (six.contains(search)) {
+            // Add label to calendar
+            hcell = (HBox) view.getChildren().get(1);
+            hcell.getChildren().add(eventLbl);
         }
     }
 
@@ -1261,7 +1269,7 @@ public class FXMLDocumentController implements Initializable {
 
     private void initializeDayView() {
 
-        // Go through each calendar time interval - 6 for 4 hours
+        // Go through each calendar time interval - 6 intervals: each for 4 hours
         for (int i = 0; i < 6; i++) {
 
             HBox hCell = new HBox();
@@ -1276,7 +1284,7 @@ public class FXMLDocumentController implements Initializable {
             hCell.getChildren().add(hourLbl);
 
             hCell.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-                //addEvent(hCell);
+                addEvent(hCell);
             });
             dayView.setHgrow(hCell, Priority.ALWAYS);
             dayView.add(hCell, 0, i);
