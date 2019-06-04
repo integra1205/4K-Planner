@@ -112,20 +112,24 @@ public class AddEventController implements Initializable {
         if (subject.getText().isEmpty() || categorieSelect.getSelectionModel().isEmpty()
                 || startDate.getValue() == null || startTime.getValue() == null
                 || endDate.getValue() == null || endTime.getValue() == null) {
-            Alert alertMessage = new Alert(Alert.AlertType.ERROR);
-            alertMessage.setHeaderText(null);
-            alertMessage.setContentText("Please fill out all fields");
-            alertMessage.showAndWait();
+            showMessage(Alert.AlertType.ERROR, "Please fill out all fields");
             return;
+        } else if (startDate.getValue().isAfter(endDate.getValue())) {
+            showMessage(Alert.AlertType.ERROR, "The start date can never be after the end date");
+            return;
+        } else if (startDate.getValue().equals(endDate.getValue())) {
+
+            if (startTime.getValue().isAfter(endTime.getValue())) {
+                showMessage(Alert.AlertType.ERROR, "The start time can not be after the end time if both are on the same date");
+                return;
+            }
         }
 
+
         //Check if the event descritption contains the character ~ because it cannot contain it due to database and filtering issues
-        if (subject.getText().contains("~") || comment.getText().contains("~")) {
+        else if (subject.getText().contains("~") || comment.getText().contains("~")) {
             //Show message indicating that the event description cannot contain the character ~
-            Alert alertMessage = new Alert(Alert.AlertType.WARNING);
-            alertMessage.setHeaderText(null);
-            alertMessage.setContentText("Event Description cannot contain the character ~");
-            alertMessage.showAndWait();
+            showMessage(Alert.AlertType.WARNING, "Event Description cannot contain the character ~");
             return;
         }
 
@@ -145,14 +149,14 @@ public class AddEventController implements Initializable {
         // Get term that was selected by the user
         String categorie = categorieSelect.getValue();
 
-        // variable that holds the ID value of the term selected by the user. It set to 0 becasue no selection has been made yet
+        // variable that holds the ID value of the categorie selected by the user. It set to 0 becasue no selection has been made yet
         int chosenCategorieID = 0;
 
-        // Get the ID of the selected term from the database based on the selected term's name
+        // Get the ID of the selected categorie from the database based on the selected categirie's name
         chosenCategorieID = databaseHandler.getCategorieID(categorie);
 
         //---------------------------------------------------------
-        //Insert new event into the EVENTS table in the database
+        //Insert new event into the EVENTS table in the database und create new Event instance
 
         //Query to get ID for the selected Term
         String insertQuery = "INSERT INTO EVENTS(EventDescription,CategorieID,CalendarName,EventStartDate,EventStartTime,EventEndDate,EventEndTime,EventComment) " +
@@ -170,16 +174,10 @@ public class AddEventController implements Initializable {
 
         //Check if insertion into database was successful, and show message either if it was or not
         if (databaseHandler.executeAction(insertQuery)) {
-            Alert alertMessage = new Alert(Alert.AlertType.INFORMATION);
-            alertMessage.setHeaderText(null);
-            alertMessage.setContentText("Event was added successfully");
-            alertMessage.showAndWait();
+            showMessage(Alert.AlertType.INFORMATION, "Event was added successfully");
         } else //if there is an error
         {
-            Alert alertMessage = new Alert(Alert.AlertType.ERROR);
-            alertMessage.setHeaderText(null);
-            alertMessage.setContentText("Adding Event Failed!\nThere is already an event with the same information");
-            alertMessage.showAndWait();
+            showMessage(Alert.AlertType.ERROR, "Adding Event Failed!\nThere is already an event with the same information");
         }
 
         //Show the new event on the calendar according to the selected filters
@@ -193,21 +191,20 @@ public class AddEventController implements Initializable {
 
     //Function that fills the startDate picker based on the clicked startDate
     void autofillDatePicker() {
-        // Get selected day, month, and year and autofill startDate selection
-   /*   int day = LocalDate.now().getDayOfMonth();
-        int month = LocalDate.now().getMonthValue();
-        int year = LocalDate.now().getYear();*/
 
         int hours = LocalTime.now().getHour();
-        int minutes = LocalTime.now().getMinute();
-
 
         // Set default value for datepickers and timepickers
-        startDate.setValue(LocalDate.now());
-        endDate.setValue(LocalDate.now());
+        startDate.setValue(LocalDate.of(MyCalendar.getInstance().event_year, MyCalendar.getInstance().event_month, MyCalendar.getInstance().event_day));
+        endDate.setValue(LocalDate.of(MyCalendar.getInstance().event_year, MyCalendar.getInstance().event_month, MyCalendar.getInstance().event_day));
 
-        startTime.setValue(LocalTime.of(hours,minutes));
-        endTime.setValue(LocalTime.of(hours+1,minutes));
+        if (LocalTime.now().getMinute() < 30) {
+            startTime.setValue(LocalTime.of(hours, 30));
+            endTime.setValue(LocalTime.now().getHour() == 23 ? LocalTime.of(hours, 59) : LocalTime.of(hours + 1, 0));
+        } else {
+            startTime.setValue(LocalTime.now().getHour() == 23 ? LocalTime.now() : LocalTime.of(hours + 1, 0));
+            endTime.setValue(LocalTime.now().getHour() == 23 ? LocalTime.of(hours, 59) : LocalTime.of(hours + 1, 30));
+        }
     }
 
     /**
@@ -277,4 +274,10 @@ public class AddEventController implements Initializable {
         });
     }
 
+    private void showMessage(Alert.AlertType type, String message) {
+        Alert alertMessage = new Alert(type);
+        alertMessage.setHeaderText(null);
+        alertMessage.setContentText(message);
+        alertMessage.showAndWait();
+    }
 }

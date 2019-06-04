@@ -5,9 +5,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class MyCalendar {
+
     private final static MyCalendar instance = new MyCalendar();
 
     public static MyCalendar getInstance() {
@@ -15,23 +17,19 @@ public class MyCalendar {
     }
 
     // for adding/editing events
-    public LocalDate event_startDate;
-    public LocalDate event_endDate;
-    public LocalTime event_startTime;
-    public LocalTime event_endTime;
     public int event_day;
     public int event_month;
     public int event_year;
     public String event_subject;
-    public int event_categorie_id;
-    public String event_comment;
+    public int event_categorie;
 
     // for the year, month, week and day the user has open, is "viewing"
     public int viewing_day;
     public int viewing_week;
     public int viewing_month;
     public int viewing_year;
-    public  int viewing_day_of_month;
+    public int viewing_day_of_month;
+    public int viewing_day_of_year;
 
 
     // for the current calendar being worked on
@@ -40,14 +38,12 @@ public class MyCalendar {
     //public set this day as a start day for created calendar
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private String calendar_start_date = sdf.format(new GregorianCalendar().getTime());
-    private String calendar_update_date = sdf.format(new GregorianCalendar().getTime());
 
     private int calendar_start_year = LocalDate.now().getYear();
     private int calendar_start_month = LocalDate.now().getMonthValue();
     private int calendar_start_day = LocalDate.now().getDayOfMonth();
-/*  private int calendar_start_year = Integer.parseInt(calendar_start_date.substring(0, 4));
-    private int calendar_start_month = Integer.parseInt(calendar_start_date.substring(5, 7));
-    private int calendar_start_day = Integer.parseInt(calendar_start_date.substring(8, 10));*/
+
+    ArrayList<MyEvent> myEvents = new ArrayList<>();
 
     public String getCalendar_start_date() {
         return calendar_start_date;
@@ -55,29 +51,6 @@ public class MyCalendar {
 
     public void setCalendar_start_date(String calendar_start_date) {
         this.calendar_start_date = calendar_start_date;
-    }
-    public String getCalendar_update_date() {
-        return calendar_update_date;
-    }
-
-    public void setCalendar_update_date(String calendar_update_date) {
-        this.calendar_update_date = calendar_update_date;
-    }
-
-    public int getCalendar_start_year() {
-        return calendar_start_year;
-    }
-
-    public int getCalendar_start_month() {
-        return calendar_start_month;
-    }
-
-    public int getCalendar_start_day() {
-        return calendar_start_day;
-    }
-
-    public void setCalendar_start_year(int calendar_start_year) {
-        this.calendar_start_year = calendar_start_year;
     }
 
     public String getMonth(int index) {

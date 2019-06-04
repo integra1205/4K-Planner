@@ -1,66 +1,84 @@
 package calendar.data.model;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 
 public class MyEvent {
     private final SimpleStringProperty subject;
-    private final SimpleStringProperty categorie;
+    private final SimpleIntegerProperty categorie;
     private final SimpleStringProperty calendar;
-    private final SimpleStringProperty startdate;
-    private final SimpleStringProperty starttime;
-    private final SimpleStringProperty enddate;
-    private final SimpleStringProperty endtime;
+    private final LocalDate startDate;
+    private final LocalTime startTime;
+    private final LocalDate endDate;
+    private final LocalTime endTime;
+    private final SimpleStringProperty comment;
 
-    public MyEvent(String subject, String categorie, String calendar, String startdate,
-                   String starttime, String enddate, String endtime) {
+    private MyCategorie eventCategorie;
+
+    public MyEvent(String subject, int categorie, String calendar, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         this.subject = new SimpleStringProperty(subject);
-        this.categorie = new SimpleStringProperty(categorie);
+        this.categorie = new SimpleIntegerProperty(categorie);
         this.calendar = new SimpleStringProperty(calendar);
-        this.startdate = new SimpleStringProperty(startdate);
-        this.starttime = new SimpleStringProperty(starttime);
-        this.enddate = new SimpleStringProperty(enddate);
-        this.endtime = new SimpleStringProperty(endtime);
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
+        this.comment = new SimpleStringProperty(null);
     }
 
-    public MyEvent(String subject, String categorie,String startdate,
-                   String starttime, String enddate, String endtime) {
+    public MyEvent(String subject, int categorie, String calendar, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, String comment) {
         this.subject = new SimpleStringProperty(subject);
-        this.categorie = new SimpleStringProperty(categorie);
-        this.calendar = new SimpleStringProperty("");
-        this.startdate = new SimpleStringProperty(startdate);
-        this.starttime = new SimpleStringProperty(starttime);
-        this.enddate = new SimpleStringProperty(enddate);
-        this.endtime = new SimpleStringProperty(endtime);
+        this.categorie = new SimpleIntegerProperty(categorie);
+        this.calendar = new SimpleStringProperty(calendar);
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
+        this.comment = new SimpleStringProperty(comment);
     }
-    
-    // Note: We need these accessors.
+
+    public MyEvent(MyEvent event) {
+        this.subject = event.subject;
+        this.categorie = event.categorie;
+        this.calendar = event.calendar;
+        this.startDate = event.startDate;
+        this.startTime = event.startTime;
+        this.endDate = event.endDate;
+        this.endTime = event.endTime;
+        this.comment = event.comment;
+    }
+
 
     public String getSubject() {
         return subject.get();
     }
-
-    public String getCategorie() {
+    public Integer getCategorie() {
         return categorie.get();
     }
-
     public String getCalendar() {
         return calendar.get();
     }
-
-    public String getStartdate() {
-        return startdate.get();
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public String getStarttime() {
-        return starttime.get();
+    public LocalTime getStartTime() {
+        return startTime;
     }
-
-    public String getEnddate() {
-        return enddate.get();
+    public LocalDate getEndDate() {
+        return endDate;
     }
-
-    public String getEndtime() {
-        return endtime.get();
+    public LocalTime getEndTime() {
+        return endTime;
     }
-
+    public String getComment() {
+        return comment.get();
+    }
+    public SimpleStringProperty commentProperty() {
+        return comment;
+    }
 }
