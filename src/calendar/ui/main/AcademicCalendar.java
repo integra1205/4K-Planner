@@ -18,7 +18,7 @@ public class AcademicCalendar extends Application {
 
         // Set main window icon
         stage.getIcons().add(
-                new Image("calendar/ui/icons/app_icon.png"));
+                new Image("calendar/ui/icons/app_icon_2.png"));
         stage.setTitle("JavaFX Planner");
 
         // Maximize window at launch
