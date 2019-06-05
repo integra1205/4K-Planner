@@ -24,7 +24,7 @@
 .weekday-header {
     -fx-font: bold 17px "System";
     -fx-font-style: normal;
-    -fx-background-color:  #26A69A;
+    -fx-background-color:  #9a529b;
     -fx-border-style: solid;
     -fx-border-insets: 1;
     -fx-border-width: .2;
@@ -32,7 +32,7 @@
 }
 
 .weekday-header .label{
-    -fx-text-fill: white;
+    -fx-text-fill: #ffffff;
 }
 
 .calendar_pane {
@@ -111,4 +111,8 @@
 }
 .jfx-tab-pane .headers-region {
     -fx-background-color: #555;
+}
+
+.date-picker > .text-field  {
+    -fx-alignment: center;
 }
