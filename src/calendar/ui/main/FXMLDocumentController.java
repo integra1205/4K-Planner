@@ -1211,15 +1211,18 @@ public class FXMLDocumentController implements Initializable {
     private void initializeYearView() {
 
         //YearGrid - 3?4
+        int monthCount = 1;
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
+
 
                 VBox vPane = new VBox();
                 vPane.getStyleClass().add("calendar_pane");
                 vPane.setMinWidth(weekdayHeaderForYear.getPrefWidth() / 3);
 
                 ImageView imView = new ImageView(new Image("calendar/ui/icons/icon_" + i + j + ".png"));
-                imView.setFitHeight(140);
+                imView.setFitHeight(100);
                 imView.setFitWidth(200);
                 vPane.getChildren().add(imView);
                 vPane.setAlignment(Pos.CENTER);
@@ -1233,6 +1236,11 @@ public class FXMLDocumentController implements Initializable {
 
                 GridPane.setVgrow(vPane, Priority.ALWAYS);
                 yearView.add(vPane, j, i);
+
+                Label lbl = new Label(MyCalendar.getInstance().getMonth(monthCount));
+                lbl.setTextFill(Color.web("#4682b4"));
+                vPane.getChildren().add(lbl);
+                monthCount++;
             }
         }
     }
