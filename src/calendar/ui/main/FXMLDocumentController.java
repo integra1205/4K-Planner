@@ -97,11 +97,31 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private HBox weekdayHeaderForWeek;
     @FXML
-    private GridPane weekView;
-    @FXML
     private HBox weekdayHeaderForWeek1;
     @FXML
+    private GridPane weekView;
+    @FXML
     private GridPane weekView1;
+    @FXML
+    private GridPane weekView2;
+    @FXML
+    private GridPane weekView3;
+    @FXML
+    private GridPane weekView4;
+    @FXML
+    private GridPane weekView5;
+    @FXML
+    private GridPane weekView6;
+    @FXML
+    private Label labelDivider;
+    @FXML
+    private Label labelDivider1;
+    @FXML
+    private Label labelDivider2;
+    @FXML
+    private Label labelDivider3;
+    @FXML
+    private Label labelDivider4;
 
 
     //MONTH
@@ -437,44 +457,29 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    // WEEK
+    //WEEK
     private void loadWeekLabels() {
 
         // Get the current VIEW
-        int year = MyCalendar.getInstance().viewing_year;
-        int month = MyCalendar.getInstance().viewing_month;
         LocalDate[] allDaysOfSelectedWeek = MyCalendar.getInstance().getAllDaysOfSelectedWeek();
-        int dayCount = 0;
+        GridPane[] weekViewGridForDay = new GridPane[]{weekView, weekView1, weekView2,weekView3, weekView4, weekView5, weekView6};
 
         weekLbl.setText("FROM  " + allDaysOfSelectedWeek[0] + "  TO  " + allDaysOfSelectedWeek[6]);
 
         // Go through calendar grid
-        for (Node node : weekView.getChildren()) {
+        for (int i=0; i<weekViewGridForDay.length; i++) {
 
-            VBox dayOfWeek = (VBox) node;
-            dayOfWeek.getChildren().clear();
-            dayOfWeek.setStyle("-fx-backgroud-color: white");
-            dayOfWeek.setStyle("-fx-font: 14px \"System\" ");
+            for (Node node : weekViewGridForDay[i].getChildren()) {
+                VBox dayOfWeek = (VBox) node;
+                dayOfWeek.getChildren().clear();
+                dayOfWeek.setStyle("-fx-backgroud-color: white");
+                dayOfWeek.setStyle("-fx-font: 14px \"System\" ");
 
-            Label lbl = new Label(Integer.toString(allDaysOfSelectedWeek[dayCount].getDayOfMonth()));
-            lbl.setPadding(new Insets(5));
-            lbl.setStyle("-fx-text-fill:darkslategray");
-            dayOfWeek.getChildren().add(lbl);
-            dayCount++;
-        }
-
-        for (Node node : weekView1.getChildren()) {
-
-            VBox dayOfWeek = (VBox) node;
-            dayOfWeek.getChildren().clear();
-            dayOfWeek.setStyle("-fx-backgroud-color: white");
-            dayOfWeek.setStyle("-fx-font: 14px \"System\" ");
-
-            Label lbl = new Label(Integer.toString(allDaysOfSelectedWeek[dayCount].getDayOfMonth()));
-            lbl.setPadding(new Insets(5));
-            lbl.setStyle("-fx-text-fill:darkslategray");
-            dayOfWeek.getChildren().add(lbl);
-            dayCount++;
+                Label lbl = new Label(Integer.toString(allDaysOfSelectedWeek[i].getDayOfMonth()));
+                lbl.setPadding(new Insets(5));
+                lbl.setStyle("-fx-text-fill:darkslategray");
+                dayOfWeek.getChildren().add(lbl);
+            }
         }
     }
 
@@ -518,7 +523,7 @@ public class FXMLDocumentController implements Initializable {
     private void populateWeekWithEvents() {
 
         String calendarName = MyCalendar.getInstance().calendar_name;
-        int currentYear = MyCalendar.getInstance().viewing_year;
+        GridPane[] weekViewGridForDay = new GridPane[]{weekView, weekView1, weekView2,weekView3, weekView4, weekView5, weekView6};
         LocalDate[] currentWeek = MyCalendar.getInstance().getAllDaysOfSelectedWeek();
 
         // Query to get ALL Events from the selected calendar!!
@@ -542,32 +547,19 @@ public class FXMLDocumentController implements Initializable {
 
                 // Check for year we have selected
                 // Check for year we have selected
-                if (currentYear == startDate.toLocalDate().getYear()) {
-                    if (startDate.toLocalDate().isEqual(currentWeek[0]) ||
-                            startDate.toLocalDate().isEqual(currentWeek[4]) ||
-                            (startDate.toLocalDate().isAfter(currentWeek[0]) && startDate.toLocalDate().isBefore(currentWeek[4])) ||
-                            (startDate.toLocalDate().isBefore(currentWeek[0]) && endDate.toLocalDate().isAfter(currentWeek[0])) ||
-                            endDate.toLocalDate().isEqual(currentWeek[0])) {
+                for (int i = 0; i < weekViewGridForDay.length; i++){
 
-                        // Get day for the month
+                    if (startDate.toLocalDate().isEqual(currentWeek[i]) || endDate.toLocalDate().isEqual(currentWeek[i]) ||
+                       (startDate.toLocalDate().isBefore(currentWeek[i]) && endDate.toLocalDate().isAfter(currentWeek[i]) )){
+
+                        // Get day for the Days of week
                         int startDay = startDate.toLocalDate().getDayOfMonth();
                         int endDay = endDate.toLocalDate().getDayOfMonth();
-
-                        showEveryDate(weekView, startDay, endDay, eventTime, eventDescript, eventCategorieID);
-
-                    } else if (startDate.toLocalDate().isEqual(currentWeek[5]) ||
-                            startDate.toLocalDate().isEqual(currentWeek[6]) ||
-                            (startDate.toLocalDate().isBefore(currentWeek[5]) && endDate.toLocalDate().isAfter(currentWeek[5])) ||
-                            endDate.toLocalDate().isEqual(currentWeek[5])) {
-
-                        // Get day for the month
-                        int startDay = startDate.toLocalDate().getDayOfMonth();
-                        int endDay = endDate.toLocalDate().getDayOfMonth();
-
-                        showEveryDate(weekView1, startDay, endDay, eventTime, eventDescript, eventCategorieID);
+                        showEveryDate(weekViewGridForDay[i], startDay, endDay, eventTime, eventDescript, eventCategorieID);
                     }
                 }
             }
+
         } catch (SQLException ex) {
             Logger.getLogger(AddEventController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1103,7 +1095,7 @@ public class FXMLDocumentController implements Initializable {
     public void initializeCalendarWeekdayHeaderWeek() {
 
         // Weekday names
-        String[] weekAbbr = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        String[] weekAbbr = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat / Sun"};
 
         for (int i = 0; i < weekAbbr.length; i++) {
 
@@ -1115,13 +1107,13 @@ public class FXMLDocumentController implements Initializable {
             HBox.setHgrow(pane, Priority.ALWAYS);
             pane.setMaxWidth(Double.MAX_VALUE);
 
-            if (i < 5) {
-                pane.setMinWidth(weekdayHeaderForWeek.getPrefWidth() / 5);
+            if (i<3) { // from mon to wed =3
+                pane.setMinWidth((weekdayHeaderForWeek.getPrefWidth() - 2*labelDivider.getPrefWidth()) / 3 );
                 weekdayHeaderForWeek.getChildren().add(pane);
                 pane.getChildren().add(new Label(weekAbbr[i]));
 
-            } else {
-                pane.setMinWidth(weekdayHeaderForWeek1.getPrefWidth() / 2);
+            } else{ // from thu to sat/sun =3
+                pane.setMinWidth((weekdayHeaderForWeek1.getPrefWidth() - 2*labelDivider.getPrefWidth()) / 3 );
                 weekdayHeaderForWeek1.getChildren().add(pane);
                 pane.getChildren().add(new Label(weekAbbr[i]));
             }
@@ -1247,31 +1239,27 @@ public class FXMLDocumentController implements Initializable {
 
     //WEEK
     private void initializeWeekView() {
+        weekdayHeaderForWeek1.setMinWidth(weekdayHeaderForWeek.getPrefWidth());
+        labelDivider1.setMinWidth(labelDivider.getPrefWidth());
+        labelDivider2.setMinWidth(labelDivider.getPrefWidth());
+        labelDivider3.setMinWidth(labelDivider.getPrefWidth());
+        labelDivider4.setMinWidth(labelDivider.getPrefWidth());
+        GridPane[] weekDayGrid = new GridPane[]{weekView, weekView1, weekView2,weekView3, weekView4, weekView5, weekView6};
 
-        // Go through each calendar grid location, or each "day" (5+2=7)
+        // Go through each grid, or each "day"
         for (int i = 0; i < 7; i++) {
 
-            if (i < 5) {
                 VBox vPane = new VBox();
                 vPane.getStyleClass().add("calendar_pane");
-                vPane.setMinWidth(weekdayHeaderForWeek.getPrefWidth() / 5);
+            // header for mon, tue, wed (=3), 2 label for divide, 2 - border(
+            vPane.setMinWidth((weekdayHeaderForWeek.getPrefWidth()-2*labelDivider.getPrefWidth()) / 3);
 
                 vPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
                     addEvent(vPane);
                 });
-                GridPane.setVgrow(vPane, Priority.ALWAYS);
-                weekView.add(vPane, i, 0);
-            } else {
-                VBox vPane = new VBox();
-                vPane.getStyleClass().add("calendar_pane");
-                vPane.setMinWidth(weekdayHeaderForWeek1.getPrefWidth() / 2);
 
-                vPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-                    addEvent(vPane);
-                });
                 GridPane.setVgrow(vPane, Priority.ALWAYS);
-                weekView1.add(vPane, i, 0);
-            }
+                weekDayGrid[i].add(vPane, 0, 0);
         }
     }
 
