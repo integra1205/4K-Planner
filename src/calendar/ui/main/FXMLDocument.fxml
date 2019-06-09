@@ -46,7 +46,7 @@
                                     </Label>
                                  </children>
                               </VBox>
-                              <JFXTabPane fx:id="tabPane" prefHeight="729.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+                              <JFXTabPane fx:id="tabPane" prefHeight="729.0" prefWidth="800.0" styleClass="jfx-tab-pane" tabClosingPolicy="UNAVAILABLE">
                                  <tabs>
                                     <Tab fx:id="yearPan" text="Year's view">
                                        <content>
@@ -407,16 +407,16 @@
             </VBox>
          </center>
          <left>
-          <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="290.0" BorderPane.alignment="CENTER">
+          <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="290.0" style="-fx-background-color: #d7d4d8;" BorderPane.alignment="CENTER">
                <children>
                   <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="290.0" stylesheets="@../style/menuStyle.css">
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="34.0" prefWidth="290.0" text="Calendar Options:" textAlignment="CENTER">
                            <VBox.margin>
-                              <Insets />
+                              <Insets top="20.0" />
                            </VBox.margin>
                         </Label>
-                        <JFXButton id="menuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#newCalendar" prefHeight="35.0" prefWidth="235.0" text="Create New Calendar">
+                        <JFXButton id="menuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#newCalendar" prefHeight="35.0" prefWidth="235.0" style="-fx-background-color: #7a839e;" text="Create New Calendar">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -424,7 +424,7 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </JFXButton>
-                        <JFXButton id="menuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#manageCalendars" prefHeight="35.0" prefWidth="235.0" text="Manage Your Calendars">
+                        <JFXButton id="menuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#manageCalendars" prefHeight="35.0" prefWidth="235.0" style="-fx-background-color: #7a839e;" text="Manage Your Calendars">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -446,7 +446,7 @@
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin></Label>
-                        <JFXDatePicker fx:id="selectedDate" defaultColor="#706b8f" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="193.0" styleClass="calendar_pane">
+                        <JFXDatePicker fx:id="selectedDate" defaultColor="#534e85" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="193.0" style="-fx-background-color: #f3f2f5;" styleClass="calendar_pane">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
@@ -559,7 +559,7 @@
                               <Insets right="30.0" />
                            </padding>
                         </VBox>
-                        <JFXButton id="menuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#updateColors" prefHeight="35.0" prefWidth="170.0" text="Update Colors">
+                        <JFXButton id="menuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#updateColors" prefHeight="35.0" prefWidth="170.0" style="-fx-background-color: #7a839e;" text="Update Colors">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
@@ -572,7 +572,7 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </Label>
-                        <JFXButton id="menuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#deleteAllEvents" prefHeight="35.0" prefWidth="235.0" text="Delete All Events">
+                        <JFXButton id="menuButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#deleteAllEvents" prefHeight="35.0" prefWidth="235.0" style="-fx-background-color: #7a839e;" text="Delete All Events">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -582,7 +582,7 @@
                         </JFXButton>
                      </children>
                      <VBox.margin>
-                        <Insets top="20.0" />
+                        <Insets />
                      </VBox.margin>
                   </VBox>
                </children>
