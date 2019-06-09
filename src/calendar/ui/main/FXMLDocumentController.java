@@ -62,6 +62,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Label calendarNameLbl;
     @FXML
+    private Label nameOfChoosenCalendar;
+    @FXML
     private JFXTabPane tabPane;
 
     //DAY
@@ -475,7 +477,6 @@ public class FXMLDocumentController implements Initializable {
 
         // Update view
         initializeButtonPrevNext();
-        initializeYearView();
         repaintView();
     }
 
@@ -1112,6 +1113,8 @@ public class FXMLDocumentController implements Initializable {
 
         initializeCalendarWeekdayHeaderYear();
 
+        initializeYearView();
+
 
         // Set Depths
         JFXDepthManager.setDepth(scrollPaneMonth, 1);
@@ -1191,9 +1194,11 @@ public class FXMLDocumentController implements Initializable {
 
                 int month = i * 3 + j + 1;
                 vPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-                    selectedDate.setValue(LocalDate.of(MyCalendar.getInstance().viewing_year, month, 1));
-                    SelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-                    selectionModel.select(monthPan);
+                    if (selectedDate.getValue()!=null) {
+                        selectedDate.setValue(LocalDate.of(MyCalendar.getInstance().viewing_year, month, 1));
+                        SelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+                        selectionModel.select(monthPan);
+                    }
                 });
 
                 GridPane.setVgrow(vPane, Priority.ALWAYS);
