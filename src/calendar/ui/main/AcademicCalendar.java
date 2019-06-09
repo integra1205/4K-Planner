@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.Locale;
 
@@ -23,6 +24,8 @@ public class AcademicCalendar extends Application {
 
         // Maximize window at launch
         stage.setMaximized(false);
+        stage.setResizable(false);
+        stage.setFullScreen(false);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
