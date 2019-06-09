@@ -62,6 +62,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Label calendarNameLbl;
     @FXML
+    private Label nameOfChoosenCalendar;
+    @FXML
     private JFXTabPane tabPane;
 
     //DAY
@@ -81,7 +83,7 @@ public class FXMLDocumentController implements Initializable {
     private JFXButton buttonNextDay;
 
 
-    // WEEK
+    //WEEK
     @FXML
     private VBox vBoxWeek;
     @FXML
@@ -413,13 +415,13 @@ public class FXMLDocumentController implements Initializable {
             if (gridCount < offset) {
                 gridCount++;
                 // Darken color of the offset days
-                dayOfMonth.setStyle("-fx-background-color: #ddddda");
+                dayOfMonth.setStyle("-fx-background-color: #e9e7ea");
             } else {
 
                 // Don't place a label if we've reached maximum label for the month
                 if (lblCount > daysInMonth) {
                     // Instead, darken dayOfMonth color
-                    dayOfMonth.setStyle("-fx-background-color: #ddddda");
+                    dayOfMonth.setStyle("-fx-background-color: #e9e7ea");
                 } else {
 
                     // Make a new dayOfMonth label
@@ -475,7 +477,6 @@ public class FXMLDocumentController implements Initializable {
 
         // Update view
         initializeButtonPrevNext();
-        initializeYearView();
         repaintView();
     }
 
@@ -1039,7 +1040,7 @@ public class FXMLDocumentController implements Initializable {
         // 7 days in a week
         int weekdays = 7;
 
-        // Weekday names
+        //Weekday names
         String[] weekAbbr = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
         for (int i = 0; i < weekdays; i++) {
@@ -1067,7 +1068,7 @@ public class FXMLDocumentController implements Initializable {
     //WEEK
     public void initializeCalendarWeekdayHeaderWeek() {
 
-        // Weekday names
+        //Weekday names
         String[] weekAbbr = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat / Sun"};
 
         for (int i = 0; i < weekAbbr.length; i++) {
@@ -1111,6 +1112,8 @@ public class FXMLDocumentController implements Initializable {
         initializeCalendarWeekdayHeader();
 
         initializeCalendarWeekdayHeaderYear();
+
+        initializeYearView();
 
 
         // Set Depths
@@ -1191,9 +1194,11 @@ public class FXMLDocumentController implements Initializable {
 
                 int month = i * 3 + j + 1;
                 vPane.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-                    selectedDate.setValue(LocalDate.of(MyCalendar.getInstance().viewing_year, month, 1));
-                    SelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-                    selectionModel.select(monthPan);
+                    if (selectedDate.getValue()!=null) {
+                        selectedDate.setValue(LocalDate.of(MyCalendar.getInstance().viewing_year, month, 1));
+                        SelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+                        selectionModel.select(monthPan);
+                    }
                 });
 
                 GridPane.setVgrow(vPane, Priority.ALWAYS);
