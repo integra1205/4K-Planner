@@ -177,29 +177,6 @@ public class FXMLDocumentController implements Initializable {
     private JFXColorPicker otherCP;
 
 
-    // Check Boxes for filtering
-    @FXML
-    private JFXCheckBox workBox;
-    @FXML
-    private JFXCheckBox studyBox;
-    @FXML
-    private JFXCheckBox sportBox;
-    @FXML
-    private JFXCheckBox vacationBox;
-    @FXML
-    private JFXCheckBox birthdaysBox;
-    @FXML
-    private JFXCheckBox holidaysBox;
-    @FXML
-    private JFXCheckBox otherBox;
-    @FXML
-    private JFXCheckBox selectAllCheckBox;
-
-
-    // Other global variables for the class
-    public static boolean workingOnCalendar = false;
-    public static boolean checkBoxesHaveBeenClicked = false;
-
 
     //**************************************************************************
     //**************************************************************************
@@ -436,13 +413,13 @@ public class FXMLDocumentController implements Initializable {
             if (gridCount < offset) {
                 gridCount++;
                 // Darken color of the offset days
-                dayOfMonth.setStyle("-fx-background-color: #E9F2F5");
+                dayOfMonth.setStyle("-fx-background-color: #ddddda");
             } else {
 
                 // Don't place a label if we've reached maximum label for the month
                 if (lblCount > daysInMonth) {
                     // Instead, darken dayOfMonth color
-                    dayOfMonth.setStyle("-fx-background-color: #E9F2F5");
+                    dayOfMonth.setStyle("-fx-background-color: #ddddda");
                 } else {
 
                     // Make a new dayOfMonth label
@@ -507,16 +484,12 @@ public class FXMLDocumentController implements Initializable {
         //Display events known to database
 
         loadCalendarLabels();
-        if (checkBoxesHaveBeenClicked) {
+
             headersDayLbl.setText(selectedDate.getValue().getDayOfWeek().toString() + ", " + selectedDate.getValue().getDayOfMonth() + " " + selectedDate.getValue().getMonth());
             headersYearLbl.setText("" + selectedDate.getValue().getYear());
             populateMonthWithEvents();
             populateWeekWithEvents();
             populateDayWithEvents();
-        } else {
-            ActionEvent actionEvent = new ActionEvent();
-            handleCheckBoxAction(actionEvent);
-        }
     }
 
     //WEEK
@@ -1150,9 +1123,6 @@ public class FXMLDocumentController implements Initializable {
         //Initialize all Color Pickers. Show saved colors for specific categories
         initalizeColorPicker();
 
-        //If the user is not working on any new or existing calendar, disable the filtering check boxes and rules buttons
-        disableCheckBoxes();
-
     }
 
     private void initializeCalendarWeekdayHeaderYear() {
@@ -1316,216 +1286,9 @@ public class FXMLDocumentController implements Initializable {
             repaintView();
     }
 
-
-    public void disableCheckBoxes() {
-
-        //Disable all check boxes for filtering events
-        workBox.setDisable(true);
-        studyBox.setDisable(true);
-        sportBox.setDisable(true);
-        vacationBox.setDisable(true);
-        birthdaysBox.setDisable(true);
-        holidaysBox.setDisable(true);
-        otherBox.setDisable(true);
-        workBox.setDisable(true);
-        selectAllCheckBox.setDisable(true);
-    }
-
-    public void enableCheckBoxes() {
-
-        //Enable all check boxes for filtering events
-        workBox.setDisable(false);
-        studyBox.setDisable(false);
-        sportBox.setDisable(false);
-        vacationBox.setDisable(false);
-        birthdaysBox.setDisable(false);
-        holidaysBox.setDisable(false);
-        otherBox.setDisable(false);
-        workBox.setDisable(false);
-        selectAllCheckBox.setDisable(false);
-        //Set selection for select all check box to true
-        selectAllCheckBox.setSelected(true);
-    }
-
-    public void selectCheckBoxes() {
-
-        //Set ALL check boxes for filtering events to be selected
-        workBox.setSelected(true);
-        studyBox.setSelected(true);
-        sportBox.setSelected(true);
-        vacationBox.setSelected(true);
-        birthdaysBox.setSelected(true);
-        holidaysBox.setSelected(true);
-        otherBox.setSelected(true);
-        workBox.setSelected(true);
-    }
-
-    public void unSelectCheckBoxes() {
-
-        //Set ALL check boxes for filtering events to be selected
-        workBox.setSelected(false);
-        studyBox.setSelected(false);
-        sportBox.setSelected(false);
-        vacationBox.setSelected(false);
-        birthdaysBox.setSelected(false);
-        holidaysBox.setSelected(false);
-        otherBox.setSelected(false);
-        workBox.setSelected(false);
-    }
-
     //******************************************************************************************
     //******************************************************************************************
     //******************************************************************************************
-
-    //Function filters all events. Make them all show up or disappear from the calendar
-    @FXML
-    private void selectAllCheckBoxes(ActionEvent e) {
-        if (selectAllCheckBox.isSelected()) {
-            selectCheckBoxes();
-        } else {
-            unSelectCheckBoxes();
-        }
-
-        handleCheckBoxAction(new ActionEvent());
-    }
-
-
-    //This function is constantly checking if any of the checkboxes is selected or deselected
-    //and therefore, populate the calendar with the events of the terms that are selected
-
-    @FXML
-    private void handleCheckBoxAction(ActionEvent e) {
-        System.out.println("have check boxes been cliked: " + checkBoxesHaveBeenClicked);
-        if (!checkBoxesHaveBeenClicked) {
-            checkBoxesHaveBeenClicked = true;
-            System.out.println("have check boxes been cliked: " + checkBoxesHaveBeenClicked);
-        }
-
-        //ArrayList that will hold all the filtered events based on the selection of what terms are visible
-        ArrayList<String> categoriesToFilter = new ArrayList();
-
-        //Check each of the checkboxes and call the appropiate queries to
-        //show only the events that belong to the term(s) the user selects
-
-        //Work
-        if (workBox.isSelected()) {
-            System.out.println("Work checkbox is selected");
-            categoriesToFilter.add("Work");
-        }
-
-        if (!workBox.isSelected()) {
-            System.out.println("Work checkbox is now deselected");
-            int auxIndex = categoriesToFilter.indexOf("Work");
-            if (auxIndex != -1) {
-                categoriesToFilter.remove(auxIndex);
-            }
-        }
-
-
-        //Study
-        if (studyBox.isSelected()) {
-            System.out.println("Study checkbox is selected");
-            categoriesToFilter.add("Study");
-        }
-        if (!studyBox.isSelected()) {
-            System.out.println("Study checkbox is now deselected");
-            int auxIndex = categoriesToFilter.indexOf("Study");
-            if (auxIndex != -1) {
-                categoriesToFilter.remove(auxIndex);
-            }
-        }
-
-        //Sport
-        if (sportBox.isSelected()) {
-            System.out.println("Sport checkbox is selected");
-            categoriesToFilter.add("Sport");
-        }
-        if (!sportBox.isSelected()) {
-            System.out.println("Sport checkbox is now deselected");
-            int auxIndex = categoriesToFilter.indexOf("Sport");
-            if (auxIndex != -1) {
-                categoriesToFilter.remove(auxIndex);
-            }
-        }
-
-        //Vacation
-        if (vacationBox.isSelected()) {
-            System.out.println("Vacation checkbox is selected");
-            categoriesToFilter.add("Vacation");
-        }
-        if (!vacationBox.isSelected()) {
-            System.out.println("Vacation checkbox is now deselected");
-            int auxIndex = categoriesToFilter.indexOf("Vacation");
-            if (auxIndex != -1) {
-                categoriesToFilter.remove(auxIndex);
-            }
-        }
-
-        //Birthdays
-        if (birthdaysBox.isSelected()) {
-            System.out.println("Birthdays checkbox is selected");
-            categoriesToFilter.add("Birthdays");
-        }
-        if (!birthdaysBox.isSelected()) {
-            System.out.println("Birthdays checkbox is now deselected");
-            int auxIndex = categoriesToFilter.indexOf("Birthdays");
-            if (auxIndex != -1) {
-                categoriesToFilter.remove(auxIndex);
-            }
-        }
-
-        //Holidays
-        if (holidaysBox.isSelected()) {
-            System.out.println("Holidays checkbox is selected");
-            categoriesToFilter.add("Holidays");
-        }
-        if (!holidaysBox.isSelected()) {
-            System.out.println("Holidays checkbox is now deselected");
-            int auxIndex = categoriesToFilter.indexOf("Holidays");
-            if (auxIndex != -1) {
-                categoriesToFilter.remove(auxIndex);
-            }
-        }
-
-
-        //Other
-        if (otherBox.isSelected()) {
-            System.out.println("Other checkbox is selected");
-            categoriesToFilter.add("Other");
-        }
-        if (!otherBox.isSelected()) {
-            System.out.println("Other checkbox is now deselected");
-            int auxIndex = categoriesToFilter.indexOf("Other");
-            if (auxIndex != -1) {
-                categoriesToFilter.remove(auxIndex);
-            }
-        }
-
-
-        System.out.println("categories to filter list: " + categoriesToFilter);
-
-        //Get name of the current calendar that the user is working on
-        String calName = MyCalendar.getInstance().calendar_name;
-
-        System.out.println("and calendarName is: " + calName);
-
-        if (categoriesToFilter.isEmpty()) {
-            System.out.println("categories are not selected. No events have to appear on calendar. " +
-                    "Just call loadCalendarLabels method in the RepaintView method");
-            selectAllCheckBox.setSelected(false);
-            loadCalendarLabels();
-        } else {
-            System.out.println("Call the appropiate function to populate the month with the filtered events");
-            //Get List of Filtered Events and store all events in an ArrayList variable
-            ArrayList<String> filteredEventsList = databaseHandler.getFilteredEvents(categoriesToFilter, calName);
-
-            System.out.println("List of Filtered events is: " + filteredEventsList);
-
-            //Repaint or reload the events based on the selected terms
-            showFilteredEventsInMonth(filteredEventsList);
-        }
-    }
-
 
     public void showFilteredEventsInMonth(ArrayList<String> filteredEventsList) {
 
