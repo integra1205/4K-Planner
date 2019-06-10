@@ -188,42 +188,44 @@ public class FXMLDocumentController implements Initializable {
     private void addEvent(Pane day) {
 
         // Purpose - Add event to a day
+        if(MyCalendar.getInstance().calendar_name!=null) {
 
-        // Do not add events to days without labels
-        if (!day.getChildren().isEmpty()) {
+            // Do not add events to days without labels
+            if (!day.getChildren().isEmpty()) {
 
-            // Get the day number
-            Label lbl = (Label) day.getChildren().get(0);
+                // Get the day number
+                Label lbl = (Label) day.getChildren().get(0);
 
-            // Store event day and month in data singleton
-            if (day instanceof VBox) {
-                MyCalendar.getInstance().event_day = Integer.parseInt(lbl.getText());
-            } else {
-                MyCalendar.getInstance().event_day = selectedDate.getValue().getDayOfMonth();
-            }
-            MyCalendar.getInstance().event_month = selectedDate.getValue().getMonthValue();
-            MyCalendar.getInstance().event_year = selectedDate.getValue().getYear();
+                // Store event day and month in data singleton
+                if (day instanceof VBox) {
+                    MyCalendar.getInstance().event_day = Integer.parseInt(lbl.getText());
+                } else {
+                    MyCalendar.getInstance().event_day = selectedDate.getValue().getDayOfMonth();
+                }
+                MyCalendar.getInstance().event_month = selectedDate.getValue().getMonthValue();
+                MyCalendar.getInstance().event_year = selectedDate.getValue().getYear();
 
 
-            // Open add event view
-            try {
-                // Load root layout from fxml file.
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/calendar/ui/addevent/add_event.fxml"));
-                AnchorPane rootLayout = (AnchorPane) loader.load();
-                Stage stage = new Stage(StageStyle.UNDECORATED);
-                stage.initModality(Modality.APPLICATION_MODAL);
+                // Open add event view
+                try {
+                    // Load root layout from fxml file.
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/calendar/ui/addevent/add_event.fxml"));
+                    AnchorPane rootLayout = (AnchorPane) loader.load();
+                    Stage stage = new Stage(StageStyle.UNDECORATED);
+                    stage.initModality(Modality.APPLICATION_MODAL);
 
-                // Pass main controller reference to view
-                AddEventController eventController = loader.getController();
-                eventController.setMainController(this);
+                    // Pass main controller reference to view
+                    AddEventController eventController = loader.getController();
+                    eventController.setMainController(this);
 
-                // Show the scene containing the root layout.
-                Scene scene = new Scene(rootLayout);
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException ex) {
-                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                    // Show the scene containing the root layout.
+                    Scene scene = new Scene(rootLayout);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException ex) {
+                    Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
@@ -371,20 +373,20 @@ public class FXMLDocumentController implements Initializable {
         loadYearLabels();
         loadMonthLabels();
         loadWeekLabels();
-        loadDayLabels();
+//        loadDayLabels();  // this info reflected in "dayHeaderForDay"
     }
 
     private void loadYearLabels() {
         yearLbl.setText(" " + MyCalendar.getInstance().viewing_year);
     }
 
-    private void loadDayLabels() {
-        int year = MyCalendar.getInstance().viewing_year;
-        int month = MyCalendar.getInstance().viewing_month;
-        int day = MyCalendar.getInstance().viewing_day_of_month;
-
-        dayLbl.setText(selectedDate.getValue().toString());
-    }
+//    private void loadDayLabels() {
+//        int year = MyCalendar.getInstance().viewing_year;
+//        int month = MyCalendar.getInstance().viewing_month;
+//        int day = MyCalendar.getInstance().viewing_day_of_month;
+//
+//        dayLbl.setText(selectedDate.getValue().toString());
+//    }
 
     private void loadMonthLabels() {
 
@@ -443,7 +445,9 @@ public class FXMLDocumentController implements Initializable {
         LocalDate[] allDaysOfSelectedWeek = MyCalendar.getInstance().getAllDaysOfSelectedWeek();
         GridPane[] weekViewGridForDay = new GridPane[]{weekView, weekView1, weekView2,weekView3, weekView4, weekView5, weekView6};
 
-        weekLbl.setText("FROM  " + allDaysOfSelectedWeek[0] + "  TO  " + allDaysOfSelectedWeek[6]);
+        weekLbl.setText("FROM  "  + allDaysOfSelectedWeek[0].getDayOfMonth() + " " + allDaysOfSelectedWeek[0].getMonth()
+                            + " " + allDaysOfSelectedWeek[0].getYear()  +  "  TO  " + allDaysOfSelectedWeek[6].getDayOfMonth()
+                            + " " + allDaysOfSelectedWeek[6].getMonth() + " " + allDaysOfSelectedWeek[6].getYear());
 
         // Go through calendar grid
         for (int i=0; i<weekViewGridForDay.length; i++) {
@@ -486,11 +490,12 @@ public class FXMLDocumentController implements Initializable {
 
         loadCalendarLabels();
 
-            headersDayLbl.setText(selectedDate.getValue().getDayOfWeek().toString() + ", " + selectedDate.getValue().getDayOfMonth() + " " + selectedDate.getValue().getMonth());
-            headersYearLbl.setText("" + selectedDate.getValue().getYear());
-            populateMonthWithEvents();
-            populateWeekWithEvents();
-            populateDayWithEvents();
+        headersDayLbl.setText(selectedDate.getValue().getDayOfWeek().toString() + ", " + selectedDate.getValue().getDayOfMonth()
+                      + " " + selectedDate.getValue().getMonth() + " " + selectedDate.getValue().getYear());
+        headersYearLbl.setText("" + selectedDate.getValue().getYear());
+        populateMonthWithEvents();
+        populateWeekWithEvents();
+        populateDayWithEvents();
     }
 
     //WEEK
@@ -1170,7 +1175,7 @@ public class FXMLDocumentController implements Initializable {
         int day = LocalDateTime.now().getDayOfMonth();
         int year = LocalDateTime.now().getYear();
 
-        thisDate.setText(dayOfWeek + ", " + month + ", " + day + ", " + year);
+        thisDate.setText(dayOfWeek + ", " + day + " " + month + " " + year);
     }
 
     private void initializeYearView() {
@@ -1414,6 +1419,14 @@ public class FXMLDocumentController implements Initializable {
 
 
     public void initializeButtonPrevNext() {
+        buttonPrevDay.setVisible(true);
+        buttonNextDay.setVisible(true);
+        buttonPrevWeek.setVisible(true);
+        buttonNextWeek.setVisible(true);
+        buttonPrevMonth.setVisible(true);
+        buttonNextMonth.setVisible(true);
+        buttonPrevYear.setVisible(true);
+        buttonNextYear.setVisible(true);
 
         buttonPrevWeek.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 
