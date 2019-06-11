@@ -286,11 +286,9 @@ public class EditEventController implements Initializable {
     //Function that updates the information of a selected event from the calendar
     public void updateEvent() {
 
-        // Define date format
         // Define Date format '2011-12-03'
-        String pattern = "dd-MM-YYYY";
+        String pattern = "YYYY-MM-dd";
         DateTimeFormatter myFormat = DateTimeFormatter.ofPattern(pattern);
-//        DateTimeFormatter myFormat = DateTimeFormatter.ISO_LOCAL_DATE;
         // Define Time format '10:15:30'
         DateTimeFormatter myTimeFormat = DateTimeFormatter.ISO_LOCAL_TIME;
 

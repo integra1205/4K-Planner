@@ -10,7 +10,7 @@ import javafx.stage.StageStyle;
 
 import java.util.Locale;
 
-public class AcademicCalendar extends Application {
+public class MainCalendar extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
