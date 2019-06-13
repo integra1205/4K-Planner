@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootPane" alignment="CENTER" stylesheets="@../style/mainStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calendar.ui.main.FXMLDocumentController">
+<VBox fx:id="rootPane" alignment="CENTER" stylesheets="@../style/mainStyle.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calendar.ui.main.FXMLDocumentController">
    <children>
       <BorderPane layoutX="350.0">
          <center>
@@ -373,18 +373,29 @@
                                                                   <Label fx:id="headersDayLbl" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="258.0" textAlignment="CENTER" />
                                                                </children>
                                                             </HBox>
-                                                            <GridPane fx:id="dayView" prefHeight="579.0" prefWidth="800.0">
-                                                              <columnConstraints>
-                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="900.0" minWidth="10.0" prefWidth="677.0" />
-                                                              </columnConstraints>
-                                                              <rowConstraints>
+                                                            <GridPane fx:id="dayView1" alignment="CENTER" prefHeight="150.0" prefWidth="800.0">
+                                                               <columnConstraints>
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
+                                                               </columnConstraints>
+                                                               <rowConstraints>
                                                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                               </rowConstraints>
+                                                            </GridPane>
+                                                            <GridPane fx:id="dayView2" alignment="CENTER" prefHeight="240.0" prefWidth="800.0">
+                                                               <columnConstraints>
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
+                                                               </columnConstraints>
+                                                               <rowConstraints>
                                                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                               </rowConstraints>
+                                                            </GridPane>
+                                                            <GridPane fx:id="dayView3" alignment="CENTER" prefHeight="186.0" prefWidth="800.0">
+                                                               <columnConstraints>
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" />
+                                                               </columnConstraints>
+                                                               <rowConstraints>
                                                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                              </rowConstraints>
+                                                               </rowConstraints>
                                                             </GridPane>
                                                          </children>
                                                       </VBox>
