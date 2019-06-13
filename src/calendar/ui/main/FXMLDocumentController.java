@@ -494,8 +494,14 @@ public class FXMLDocumentController implements Initializable {
         MyCalendar.getInstance().viewing_week = selectedDate.getValue().getDayOfWeek().getValue();
         MyCalendar.getInstance().viewing_day_of_month = selectedDate.getValue().getDayOfMonth();
 
-        // Update view
-        initializeButtonPrevNext();
+        buttonPrevDay.setVisible(true);
+        buttonNextDay.setVisible(true);
+        buttonPrevWeek.setVisible(true);
+        buttonNextWeek.setVisible(true);
+        buttonPrevMonth.setVisible(true);
+        buttonNextMonth.setVisible(true);
+        buttonPrevYear.setVisible(true);
+        buttonNextYear.setVisible(true);
     }
 
 
@@ -1120,6 +1126,7 @@ public class FXMLDocumentController implements Initializable {
         initializeCalendarWeekdayHeaderYear();
 
         initializeYearView();
+        initializeButtonPrevNext();
 
 
         // Set Depths
@@ -1419,14 +1426,7 @@ public class FXMLDocumentController implements Initializable {
 
 
     public void initializeButtonPrevNext() {
-        buttonPrevDay.setVisible(true);
-        buttonNextDay.setVisible(true);
-        buttonPrevWeek.setVisible(true);
-        buttonNextWeek.setVisible(true);
-        buttonPrevMonth.setVisible(true);
-        buttonNextMonth.setVisible(true);
-        buttonPrevYear.setVisible(true);
-        buttonNextYear.setVisible(true);
+
 
         buttonPrevWeek.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 
